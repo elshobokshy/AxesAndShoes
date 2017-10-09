@@ -46,7 +46,7 @@ class AuthController extends Controller
             $country = $request->getParam('country');
             
             $this->validator->request($request, [
-                /* 'username' => V::length(3, 25)->alnum('_')->noWhitespace(),
+                'username' => V::length(3, 25)->alnum('_')->noWhitespace(),
                 'email' => V::noWhitespace()->email(),
                 'password' => [
                     'rules' => V::noWhitespace()->length(6, 25),
@@ -64,7 +64,7 @@ class AuthController extends Controller
                 'last_name' => V::length(1, 25)->alpha(),
                 'city' => V::length(1, 25)->alpha()->noWhitespace(),
                 'country' => V::length(1, 25)->alpha()->noWhitespace(),
-                'birthdate' => V::Date('Y-m-d') */
+                'birthdate' => V::Date('Y-m-d')
             ]);
 
             if ($this->auth->findByCredentials(['login' => $username])) {
