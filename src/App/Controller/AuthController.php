@@ -64,11 +64,8 @@ class AuthController extends Controller
                 'last_name' => V::length(1, 25)->alpha(),
                 'city' => V::length(1, 25)->alpha()->noWhitespace(),
                 'country' => V::length(1, 25)->alpha()->noWhitespace(),
-<<<<<<< HEAD
-                'birthdate' => V::Date('Y-m-d')
-=======
                 'birthdate' => V::Date('Y-m-d') */
->>>>>>> Added user registration.
+
             ]);
 
             if ($this->auth->findByCredentials(['login' => $username])) {
