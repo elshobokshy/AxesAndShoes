@@ -92,6 +92,11 @@ CREATE TABLE `roles` (
 --
 -- Dumping data for table `roles`
 --
+
+INSERT INTO `roles` (`id`, `slug`, `name`, `permissions`, `created_at`, `updated_at`) VALUES
+(1, 'admin', 'Admin', '{"user.create":true,"user.update":true,"user.delete":true}', '2017-10-02 12:40:12', '2017-10-02 12:40:12'),
+(2, 'user', 'User', '{"user.update":true}', '2017-10-02 12:40:12', '2017-10-02 12:40:12');
+
 -- --------------------------------------------------------
 
 --

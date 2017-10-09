@@ -16,6 +16,9 @@ class User extends EloquentUser
         'password',
         'last_name',
         'first_name',
+        'birthdate',
+        'country',
+        'city',
         'permissions',
     ];
 
