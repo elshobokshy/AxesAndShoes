@@ -39,9 +39,14 @@ class AuthController extends Controller
             $username = $request->getParam('username');
             $email = $request->getParam('email');
             $password = $request->getParam('password');
-
+            $first_name = $request->getParam('first_name');
+            $last_name = $request->getParam('last_name');
+            $birthdate = $request->getParam('birthdate');
+            $city = $request->getParam('city');
+            $country = $request->getParam('country');
+            
             $this->validator->request($request, [
-                'username' => V::length(3, 25)->alnum('_')->noWhitespace(),
+                /* 'username' => V::length(3, 25)->alnum('_')->noWhitespace(),
                 'email' => V::noWhitespace()->email(),
                 'password' => [
                     'rules' => V::noWhitespace()->length(6, 25),
@@ -54,7 +59,12 @@ class AuthController extends Controller
                     'messages' => [
                         'equals' => 'Passwords don\'t match'
                     ]
-                ]
+                ],
+                'first_name' => V::length(1, 25)->alpha()->noWhitespace(),
+                'last_name' => V::length(1, 25)->alpha(),
+                'city' => V::length(1, 25)->alpha()->noWhitespace(),
+                'country' => V::length(1, 25)->alpha()->noWhitespace(),
+                'birthdate' => V::Date('Y-m-d') */
             ]);
 
             if ($this->auth->findByCredentials(['login' => $username])) {
@@ -68,14 +78,21 @@ class AuthController extends Controller
             if ($this->validator->isValid()) {
                 $role = $this->auth->findRoleByName('User');
 
-                $user = $this->auth->registerAndActivate([
+                $credentials = [
                     'username' => $username,
                     'email' => $email,
                     'password' => $password,
+                    'first_name' => $first_name,
+                    'last_name' => $last_name,
+                    'city' => $city,
+                    'country' => $country,
+                    'birthdate' => $birthdate,
                     'permissions' => [
                         'user.delete' => 0
                     ]
-                ]);
+                ];
+                
+                $user = $this->auth->registerAndActivate($credentials);
 
                 $role->users()->attach($user);
 
