@@ -1,9 +1,9 @@
 {
-    "name": "awurth/slim-base",
-    "description": "Boilerplate for Slim PHP micro-framework",
-    "keywords": ["slim", "eloquent", "twig", "framework", "boilerplate", "skeleton"],
-    "homepage": "https://github.com/awurth/slim-base",
-    "license": "MIT",
+    "name": "AxesAndShoes",
+    "description": "Web app to rent lumberjack shoes",
+    "keywords": ["Axes", "Shoes", "Rent"],
+    "homepage": "https://github.com/elshobokshy/AxesAndShoes",
+    "license": "Not under licence",
     "authors": [
         {
             "name": "AxesAndShoes",
