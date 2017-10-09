@@ -9,7 +9,8 @@ return [
         'view' => [
             'templates_path' => dirname(__DIR__) . '/src/App/Resources/views',
             'twig' => [
-                'cache' => dirname(__DIR__) . '/var/cache/twig',
+//                'cache' => dirname(__DIR__) . '/var/cache/twig',
+                'cache' => false,
             ]
         ],
 

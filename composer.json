@@ -6,9 +6,9 @@
     "license": "MIT",
     "authors": [
         {
-            "name": "Alexis Wurth",
-            "email": "alexis.wurth57@gmail.com",
-            "homepage": "https://github.com/awurth"
+            "name": "AxesAndShoes",
+            "email": "contact@axesandshoes.com",
+            "homepage": "https://github.com/elshobokshy/AxesAndShoes"
         }
     ],
     "autoload": {
@@ -19,6 +19,7 @@
     "require": {
         "awurth/slim-validation": "^3.0",
         "cartalyst/sentinel": "^2.0",
+        "components/jquery": "^3.2",
         "illuminate/database": "^5.4",
         "illuminate/events": "^5.4",
         "incenteev/composer-parameter-handler": "^2.1",
@@ -28,20 +29,21 @@
         "slim/flash": "^0.2.0",
         "slim/slim": "^3.8",
         "slim/twig-view": "^2.3",
-        "symfony/http-foundation": "^3.3"
+        "symfony/http-foundation": "^3.3",
+        "twbs/bootstrap": "^3.3"
     },
     "config": {
         "sort-packages": true
     },
-    "scripts": {
-        "start": "php -S 0.0.0.0:8080 -t public public/index.php",
-        "post-install-cmd": [
-            "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters"
-        ],
-        "post-update-cmd": [
-            "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters"
-        ]
-    },
+//    "scripts": {
+//        "start": "php -S 0.0.0.0:8080 -t public public/index.php",
+//        "post-install-cmd": [
+//            "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters"
+//        ],
+//        "post-update-cmd": [
+//            "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters"
+//        ]
+//    },
     "extra": {
         "incenteev-parameters": {
             "file": "app/parameters.yml"
