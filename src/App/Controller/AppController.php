@@ -12,8 +12,12 @@ class AppController extends Controller
         return $this->view->render($response, 'App/home.twig');
     }
 
-    public function test(Request $request, Response $response)
+    public function profile(Request $request, Response $response)
     {
-        return $this->view->render($response, 'App/test.twig');
+        if($this->auth->guest()) {
+            return $this->view->render($response, 'Auth/login.twig');
+        } else if ($user = $this->auth->getUser()) {
+            return $this->view->render($response, 'App/profile.twig');
+        }
     }
 }
