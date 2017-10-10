@@ -20,9 +20,4 @@ class AppController extends Controller
             return $this->view->render($response, 'App/profile.twig');
         }
     }
-
-    public function gallery(Request $request, Response $response)
-    {
-        return $this->view->render($response, 'App/gallery.twig');
-    }
 }
