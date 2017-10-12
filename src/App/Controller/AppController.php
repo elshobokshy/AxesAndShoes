@@ -21,13 +21,26 @@ class AppController extends Controller
         }
     }
     
-    public function product(Request $request, Response $response)
+    public function product(Request $request, Response $response, $id)
     {
+        $product = $this->container->db->table('product')->find($id);
+        if($product == NULL)
+            return $this->view->render($response, 'App/product.twig', array("isNull" => true));
+
         $val = $this->auth->check() ? true : false;
 
-        $product = new Product();
-        
-        $data = array("logged" => $val);
+        $color = $this->container->db->table('color')->find($product->color_id);
+        $material = $this->container->db->table('material')->find($product->material_id);
+
+        $data = array(
+            "logged" => $val,
+            "title" => $product->title,
+            "desc" => $product->description, 
+            "color" => $color->colorName, 
+            "material" => $material->materialName,
+            "size" => $product->size,
+            "waterproof" => $product->waterproof ? "Yes" : "No"
+        );
         return $this->view->render($response, 'App/product.twig', $data);
     }
 }
