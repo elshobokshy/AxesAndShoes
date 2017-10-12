@@ -1,0 +1,68 @@
+{% extends 'layout.twig' %}
+
+{% block body %}
+
+<div class="panel panel-default" style="margin: 50px">
+    <div class="panel-heading"> <h2> The title of the product </h2> </div>
+    <div class="panel-body">
+        <strong>Descritpion :</strong> <br>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut pharetra ipsum eu tellus cursus, 
+        fringilla pretium metus vehicula. Integer vestibulum at odio ac blandit. Morbi suscipit, odio 
+        nec fermentum tempor, nulla quam placerat sapien, sit amet faucibus nunc turpis vitae felis. 
+        Nam dolor sapien, pretium at fermentum sed, rutrum vel orci. Cras sed pulvinar diam, a vestibulum 
+        ipsum. Pellentesque dignissim sit amet odio a cursus. Quisque volutpat scelerisque lectus, in 
+        porttitor metus euismod at. Vestibulum tincidunt dignissim venenatis. Maecenas auctor nulla in 
+        tincidunt rhoncus. Aenean sed ante nec risus dignissim sagittis. Aliquam iaculis nisl eget sapien 
+        pretium, quis venenatis lectus hendrerit. Mauris gravida libero in hendrerit tempus. Aliquam non 
+        ullamcorper lorem. Proin vestibulum massa eget augue dictum tempor. Duis et nunc venenatis est 
+        pretium interdum. 
+
+        <br><br>
+        <ul class="list-group">
+            <li class="list-group-item"><strong>Color : </strong> Brown</li>
+            <li class="list-group-item"><strong>Material : </strong> Leather</li>
+            <li class="list-group-item"><strong>Size : </strong> 99</li>
+            <li class="list-group-item"><strong>Waterproof : </strong> Maybe</li>
+        </ul>
+    
+        <hr>
+        
+        <div class="row">
+            <div class="col-xs-6 col-md-3">
+                <div class="thumbnail">
+                    <img src="..." alt="Img1" style="height: 250px">
+                </div>
+            </div>
+
+            <div class="col-xs-6 col-md-3">
+                <div class="thumbnail">
+                    <img src="..." alt="Img2" style="height: 250px">
+                </div>
+            </div>
+
+            <div class="col-xs-6 col-md-3">
+                <div class="thumbnail">
+                    <img src="..." alt="Img3" style="height: 250px">
+                </div>
+            </div>
+
+            <div class="col-xs-6 col-md-3">
+                <div class="thumbnail">
+                    <img src="..." alt="Img4" style="height: 250px">
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Button to show when the user is logged in -->
+    <div style="width: 200px; margin: auto; text-align: center">
+        <button type="button" class="btn btn-success btn-lg" style="margin: 5px">Rent this product</button>
+    </div>
+
+    <!-- Button to show when the user's NOT logged in -->
+    <div style="width: 400px; margin: 0 auto; text-align: center">
+        <button type="button" class="btn btn-danger btn-lg" style="margin: 5px">You have to login to rent a product</button>
+    </div>
+</div>
+
+{% endblock %}
