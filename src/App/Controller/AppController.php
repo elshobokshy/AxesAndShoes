@@ -12,8 +12,8 @@ class AppController extends Controller
         return $this->view->render($response, 'App/home.twig');
     }
 
-    public function test(Request $request, Response $response)
+    public function product(Request $request, Response $response)
     {
-        return $this->view->render($response, 'App/test.twig');
+        return $this->view->render($response, 'App/product.twig');
     }
 }
