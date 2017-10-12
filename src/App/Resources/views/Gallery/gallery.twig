@@ -1,0 +1,20 @@
+{% import 'filters.twig' as filt %}
+{% import 'products.twig' as produ %}
+
+{% extends 'layout.twig' %}
+
+{% block title %} Gallery {% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-sm-2">
+            {% include filt %}
+        </div>
+
+        <div class="col-sm-2">
+            {% include produ %}
+        </div>
+    </div>
+
+
+{% endblock %}
