@@ -23,6 +23,9 @@ class AppController extends Controller
     
     public function product(Request $request, Response $response)
     {
-        return $this->view->render($response, 'App/product.twig');
+        $val = $this->auth->check() ? true : false;
+        
+        $data = array("logged" => $val);
+        return $this->view->render($response, 'App/product.twig', $data);
     }
 }
