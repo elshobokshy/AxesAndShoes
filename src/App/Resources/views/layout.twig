@@ -12,10 +12,9 @@
     {% block stylesheets %}
         <link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}">
         <link rel="stylesheet" href="{{ asset('css/bootstrap-theme.css') }}">
-        <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     {% endblock %}
 </head>
-<body>
+<body onload="geoFindMe()">
     {% block navbar %}
         {% include 'App/navbar.twig' %}
     {% endblock %}
@@ -27,9 +26,8 @@
     {% block body %}{% endblock %}
 
     {% block javascript %}
-        <script src="{{ asset('lib/jquery/dist/jquery.min.js') }}"></script>
         <script src="{{ asset('js/bootstrap.js') }}"></script>
-        <script src="{{ asset('js/app.js') }}"></script>
+        <script src="{{ asset('js/jquery.js') }}"></script>
     {% endblock %}
 </body>
 </html>

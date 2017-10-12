@@ -7,6 +7,7 @@
         <h2 class="ui teal header">
             <i class="user icon"></i> Create a new account
         </h2>
+        <p id="geoError">
         <form class="ui large form error" action="{{ path_for('register') }}" method="POST">
             <div class="ui stacked segment">
                 <div class="field{% if has_error('username') %} error{% endif %}">
@@ -21,6 +22,37 @@
                         <input type="email" name="email" placeholder="Email" value="{{ val('email') }}">
                     </div>
                 </div>
+                <div class="field{% if has_error('first_name') %} error{% endif %}">
+                    <div class="ui left icon input">
+                        <i class="user icon"></i>
+                        <input type="text" name="first_name" placeholder="First Name" value="{{ val('first_name') }}">
+                    </div>
+                </div>
+                <div class="field{% if has_error('last_name') %} error{% endif %}">
+                    <div class="ui left icon input">
+                        <i class="user icon"></i>
+                        <input type="text" name="last_name" placeholder="Last Name" value="{{ val('last_name') }}">
+                    </div>
+                </div>
+                <div class="field{% if has_error('city') %} error{% endif %}">
+                    <div class="ui left icon input">
+                        <i class="user icon"></i>
+                        <input type="text" id="city" name="city" placeholder="City" value="">
+                    </div>
+                </div>
+                <div class="field{% if has_error('country') %} error{% endif %}">
+                    <div class="ui left icon input">
+                        <i class="user icon"></i>
+                        <input type="text" id="country" name="country" placeholder="Country" value="">
+                    </div>
+                </div>
+                <div class="field{% if has_error('birthdate') %} error{% endif %}">
+                    <div class="ui left icon input">
+                        <i class="user icon"></i>
+                        <input type="date" name="birthdate" placeholder="Birthdate" value="{{ val('birthdate') }}">
+                    </div>
+                </div>
+
                 <div class="field{% if has_error('password') %} error{% endif %}">
                     <div class="ui left icon input">
                         <i class="lock icon"></i>
@@ -52,4 +84,12 @@
     </div>
 </div>
 
+{% endblock %}
+
+{% block javascript %}
+    {{ parent() }}
+    <script src="{{ asset('js/geolocation.js') }}"></script>
+    <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDgpv9yN4jRoSYSQZNM244tO5bzkeYg4bU">
+    </script>
 {% endblock %}
