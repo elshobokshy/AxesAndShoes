@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="cbeeb425-f959-4a42-a08b-e5c175c38fa2" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/App/Resources/views/Auth/register.twig" afterPath="$PROJECT_DIR$/src/App/Resources/views/Auth/register.twig" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/App/Resources/views/layout.twig" afterPath="$PROJECT_DIR$/src/App/Resources/views/layout.twig" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -33,11 +34,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="register.twig" pinned="false" current-in-tab="false">
+      <file leaf-file-name="register.twig" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/App/Resources/views/Auth/register.twig">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="467">
-              <caret line="79" column="22" lean-forward="false" selection-start-line="79" selection-start-column="22" selection-end-line="79" selection-end-column="22" />
+            <state relative-caret-position="724">
+              <caret line="39" column="0" lean-forward="false" selection-start-line="39" selection-start-column="0" selection-end-line="39" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -83,11 +84,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="layout.twig" pinned="false" current-in-tab="true">
+      <file leaf-file-name="layout.twig" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/App/Resources/views/layout.twig">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="589">
-              <caret line="31" column="18" lean-forward="true" selection-start-line="31" selection-start-column="18" selection-end-line="31" selection-end-column="18" />
+            <state relative-caret-position="570">
+              <caret line="30" column="18" lean-forward="true" selection-start-line="30" selection-start-column="18" selection-end-line="30" selection-end-column="18" />
               <folding />
             </state>
           </provider>
@@ -147,9 +148,9 @@
         <option value="$PROJECT_DIR$/src/App/Resources/views/Gallery/gallery.twig" />
         <option value="$PROJECT_DIR$/src/App/Resources/routes/app.php" />
         <option value="$PROJECT_DIR$/src/App/Controller/AppController.php" />
-        <option value="$PROJECT_DIR$/src/App/Resources/views/Auth/register.twig" />
         <option value="$PROJECT_DIR$/src/App/Controller/AuthController.php" />
         <option value="$PROJECT_DIR$/src/App/Resources/views/layout.twig" />
+        <option value="$PROJECT_DIR$/src/App/Resources/views/Auth/register.twig" />
       </list>
     </option>
   </component>
@@ -454,12 +455,12 @@
       <workItem from="1507622134728" duration="492000" />
       <workItem from="1507642429391" duration="672000" />
       <workItem from="1507728471092" duration="20000" />
-      <workItem from="1507809892397" duration="10055000" />
+      <workItem from="1507809892397" duration="10086000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="18027000" />
+    <option name="totallyTimeSpent" value="18058000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1603" height="1046" extended-state="0" />
@@ -875,14 +876,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/App/Resources/views/Auth/register.twig">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="467">
-          <caret line="79" column="22" lean-forward="false" selection-start-line="79" selection-start-column="22" selection-end-line="79" selection-end-column="22" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/App/Controller/AuthController.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="410">
@@ -901,8 +894,16 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/App/Resources/views/layout.twig">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="589">
-          <caret line="31" column="18" lean-forward="true" selection-start-line="31" selection-start-column="18" selection-end-line="31" selection-end-column="18" />
+        <state relative-caret-position="570">
+          <caret line="30" column="18" lean-forward="true" selection-start-line="30" selection-start-column="18" selection-end-line="30" selection-end-column="18" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/App/Resources/views/Auth/register.twig">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="724">
+          <caret line="39" column="0" lean-forward="false" selection-start-line="39" selection-start-column="0" selection-end-line="39" selection-end-column="0" />
           <folding />
         </state>
       </provider>
