@@ -20,6 +20,7 @@ class AppController extends Controller
             return $this->view->render($response, 'App/profile.twig');
         }
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
     }
 
@@ -27,5 +28,7 @@ class AppController extends Controller
     {
         return $this->view->render($response, 'App/gallery.twig');
 >>>>>>> c31f6b62468ff7a6173f55cb2dd50e218eed8a06
+=======
+>>>>>>> 6e2ac13d74e88a748a974e36fdbbc30eb30128ac
     }
 }

@@ -10,13 +10,17 @@ function geoFindMe() {
       var latitude  = position.coords.latitude;
       var longitude = position.coords.longitude;
 
-     /*  var latlngJs[] = http://maps.googleapis.com/maps/api/geocode/json?latlng=latitude,longitude; */
      var GEOCODING = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=' + latitude + '%2C' + longitude + '&language=en';
-     
+
      $.getJSON(GEOCODING).done(function(location) {
-        console.log(location.results[0].address_components[1].long_name)
-        $('#country').val(location.results[0].address_components[4].long_name);
-        $('#city').val(location.results[0].address_components[1].long_name);
+        for (var i = 0; i < location.results[0].address_components.length; i++) {
+          if (location.results[0].address_components[i].types[0] == "country") {
+            $('#country').val(location.results[0].address_components[i].long_name);
+          }
+          if (location.results[0].address_components[i].types[0] == "locality") {
+            $('#city').val(location.results[0].address_components[i].long_name);
+          }
+      }
      })
 
     };
