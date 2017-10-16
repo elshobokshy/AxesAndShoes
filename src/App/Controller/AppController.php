@@ -51,7 +51,7 @@ class AppController extends Controller
             "waterproof" => $product->waterproof ? "Yes" : "No",
             "img" => $img
         );
-
+        
         return $this->view->render($response, 'App/product.twig', $data);
     }
 }
