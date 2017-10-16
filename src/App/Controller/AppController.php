@@ -38,7 +38,7 @@ class AppController extends Controller
         $img = array();
         for($i = 0 ; $i < sizeof($json) ; $i++)
         {
-            array_push($img, $json[$i]->url);
+            array_push($img, $_SERVER['REQUEST_URI'] . "/../../img/" . $json[$i]->url);
         }
 
         $data = array(
@@ -51,7 +51,7 @@ class AppController extends Controller
             "waterproof" => $product->waterproof ? "Yes" : "No",
             "img" => $img
         );
-        
+
         return $this->view->render($response, 'App/product.twig', $data);
     }
 }
