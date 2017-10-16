@@ -1,0 +1,28 @@
+<form action="" method="post" class="form-vertical">
+
+    <!-- minSize -->
+    <div class="form-group">
+        <label for="minSize" class="col-sm-3 control-label">Size min</label>
+        <div class="col-sm-7">
+            <input type="text" id="minSize" class="form-control">
+        </div>
+    </div>
+
+    <!-- maxSize -->
+    <div class="form-group">
+        <label for="maxSize" class="col-sm-3 control-label">Size max</label>
+        <div class="col-sm-7">
+            <input type="text" id="maxSize" class="form-control">
+        </div>
+    </div>
+
+    <!-- Materials -->
+    <div class="form-group">
+        <label class="col-sm-2 control-label">Materials</label>
+        <div class="col-sm-10">
+            {#{% for material in f.materials %}
+                <label><input value="{{ material.name }}" type="checkbox">
+                    {{ material.name }}</label>
+            {% endfor %}#}
+        </div ></div>
+</form>
