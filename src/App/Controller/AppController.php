@@ -35,10 +35,11 @@ class AppController extends Controller
 
         $json = json_decode($product->image)->img;
 
-        $img = array();
+
+        $img = [];
         for($i = 0 ; $i < sizeof($json) ; $i++)
         {
-            array_push($img, $json[$i]->url);
+            array_push($img,  $_SERVER['REQUEST_URI'] . '/../../img/' . $json[$i]->url); //TODO a changer avant rendu
         }
 
         $data = array(
