@@ -22,29 +22,13 @@
             <hr>
             
             <div class="row">
-                <div class="col-xs-6 col-md-3">
-                    <div class="thumbnail">
-                        <img src="..." alt="Img1" style="height: 250px">
+                {% for i in img %}
+                    <div class="col-xs-6 col-md-3">
+                        <div class="thumbnail">
+                            <img src="/img/{{ i }}" alt="Img1" style="height: 250px">
+                        </div>
                     </div>
-                </div>
-
-                <div class="col-xs-6 col-md-3">
-                    <div class="thumbnail">
-                        <img src="..." alt="Img2" style="height: 250px">
-                    </div>
-                </div>
-
-                <div class="col-xs-6 col-md-3">
-                    <div class="thumbnail">
-                        <img src="..." alt="Img3" style="height: 250px">
-                    </div>
-                </div>
-
-                <div class="col-xs-6 col-md-3">
-                    <div class="thumbnail">
-                        <img src="..." alt="Img4" style="height: 250px">
-                    </div>
-                </div>
+                {% endfor %}
             </div>
         </div>
 
