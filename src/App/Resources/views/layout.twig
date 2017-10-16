@@ -7,14 +7,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>{% block title %}Slim base{% endblock %}</title>
+    <title>{% block title %}Axes & Shoes{% endblock %}</title>
 
     {% block stylesheets %}
         <link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}">
         <link rel="stylesheet" href="{{ asset('css/bootstrap-theme.css') }}">
     {% endblock %}
 </head>
-<body onload="geoFindMe()">
+<body>
     {% block navbar %}
         {% include 'App/navbar.twig' %}
     {% endblock %}
@@ -26,8 +26,8 @@
     {% block body %}{% endblock %}
 
     {% block javascript %}
-        <script src="{{ asset('js/bootstrap.js') }}"></script>
         <script src="{{ asset('js/jquery.js') }}"></script>
+        <script src="{{ asset('js/bootstrap.js') }}"></script>
     {% endblock %}
 </body>
 </html>

@@ -2,7 +2,8 @@
 
 $controllers = [
     'app.controller' => 'App\Controller\AppController',
-    'auth.controller' => 'App\Controller\AuthController'
+    'auth.controller' => 'App\Controller\AuthController',
+    'gallery.controller' => 'App\Controller\GalleryController'
 ];
 
 foreach ($controllers as $key => $class) {
