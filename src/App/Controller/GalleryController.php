@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Model\Product;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
@@ -9,22 +10,22 @@ class GalleryController extends Controller
 {
     public function gallery(Request $request, Response $response, Array $data = [])
     {
+
+
         $data['f'] = [
-            'minSize' => $request->getParam('minSize') ?: \Product::getMinSize(),
-            'maxSize' => $request->getParam('maxSize') ?: \Product::getMaxSize(),
-            'minPrice' => $request->getParam('minPrice') ?: \Product::getMinPrice(),
-            'maxPrice' => $request->getParam('maxPrice') ?: \Product::getMaxPrice(),
-            'materials' => $request->getParam('materials') ?: \Material::getAll(),
+            'minSize' => $request->getParam('minSize') ?: Product::getMinSize(),
+            'maxSize' => $request->getParam('maxSize') ?: Product::getMaxSize(),
+            'minPrice' => $request->getParam('minPrice') ?: Product::getMinPrice(),
+            'maxPrice' => $request->getParam('maxPrice') ?: Product::getMaxPrice(),
+            /*'materials' => $request->getParam('materials') ?: Material::getAll(),
             'waterproof' => $request->getParam('waterproof') ?: 0, //if yes waterproof only
-            'colors' => $request->getParam('colors') ?: \Color::getAll()
+            'colors' => $request->getParam('colors') ?: \Color::getAll()*/
         ];
 
-       /* $p = \Product::
+        /*$p = \Product::
 
 
-            ->orderBy('')
-
-*/
+            ->orderBy(''
 
 
 
@@ -54,8 +55,9 @@ class GalleryController extends Controller
 
 
 
-
-
+*/
+        /*$a = $this->container->get(Product);*/
+        $data['minSize'] = Product::getMinSize();
         $data['post'] = $_POST;
         $data['get'] = $_GET;
         $data['p'] = 'bleu';

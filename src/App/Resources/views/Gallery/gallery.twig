@@ -4,15 +4,13 @@
 {% block body %}
     <div class="row">
         <div class="col-sm-3">
+            {{ dump(f) }}
             <!-- Filters -->
             {% include 'Gallery/filters.twig' %}
         </div>
         <div class="col-sm-9">
             <!-- Products -->
             {% include 'Gallery/products.twig' %}
-            <pre>
-                {{ dump(dat) }}
-            </pre>
         </div>
     </div>
 {% endblock %}

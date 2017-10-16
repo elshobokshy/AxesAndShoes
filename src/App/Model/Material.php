@@ -14,4 +14,9 @@ class Material extends Model
     ];
 
     public $timestamps = false;
+
+    public function products()
+    {
+        return $this->hasMany('Product', 'id', 'color_id');
+    }
 }
