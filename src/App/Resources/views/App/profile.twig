@@ -1,7 +1,100 @@
-<p>Username : {{ auth.user.username }} </p>
-<p>Email : {{ auth.user.email }} </p>
-<p>First name : {{ auth.user.first_name }} </p>
-<p>Last name : {{ auth.user.last_name }} </p>
-<p>Birthdate : {{ auth.user.birthdate }} </p>
-<p>City : {{ auth.user.city }} </p>
-<p>Country : {{ auth.user.country }} </p>
+{% extends 'layout.twig' %}
+
+{% block title %}- Profile{% endblock %}
+
+{% block body %}
+
+<div class="container">
+
+    <div class="col-md-3">
+        <!-- *** CUSTOMER MENU ***
+    _________________________________________________________ -->
+        <div class="panel panel-default sidebar-menu">
+
+            <div class="panel-heading">
+                <h3 class="panel-title">Customer section</h3>
+            </div>
+
+            <div class="panel-body">
+                <ul class="nav nav-pills nav-stacked">
+                    <li>
+                        <a href="#"><i class="fa fa-list"></i> Dashboard</a>
+                    </li>
+                    <li>
+                        <a href="{{ path_for('profile') }}"><i class="fa fa-user"></i> My account</a>
+                    </li>
+                    <li>
+                        <a href="{{ path_for('home') }}"><i class="fa fa-sign-out"></i> Logout</a>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+        <!-- /.col-md-3 -->
+
+        <!-- *** CUSTOMER MENU END *** -->
+    </div>
+
+    <div class="col-md-9">
+        <div class="box">
+            <h1>My account</h1>
+            <p class="lead">Check your personal details here.</p>
+
+            <hr>
+
+            <h3>Personal details</h3>
+            <form>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="firstname">First name</label>
+                            <input type="text" class="form-control" id="firstname" value="{{ auth.user.first_name }}" disabled>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="lastname">Last name</label>
+                            <input type="text" class="form-control" id="lastname" value="{{ auth.user.last_name }}" disabled>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.row -->
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" class="form-control" id="email" value="{{ auth.user.email }}" disabled>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="birthdate">Birthdate</label>
+                            <input type="text" class="form-control" id="birthdate" value="{{ auth.user.birthdate }}" disabled>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.row -->
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="city">City</label>
+                            <input type="text" class="form-control" id="city" value="{{ auth.user.city }}" disabled>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="country">Country</label>
+                            <input type="text" class="form-control" id="country" value="{{ auth.user.country }}" disabled>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+<!-- /.container -->
+
+{% endblock %}
