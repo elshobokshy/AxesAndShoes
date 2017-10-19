@@ -54,14 +54,20 @@ class AppController extends Controller
             "color" => $product->color, 
             "material" => $product->material,
             "size" => $product->size,
+<<<<<<< d1f11094b78696c539f7a4bdbef218bf14c8359a
 <<<<<<< 951bcee37d81c18f2142860220515cb375b4e2af
             "waterproof" => $product->waterproof,
             "img" => $img
 =======
+=======
+>>>>>>> The real price is now displayed. The "product" page's been renamed to "detail" page. The template has also been applied to it.
             "waterproof" => $product->waterproof ? "Yes" : "No",
             "main_img" => $main_img,
             "img" => $img, 
             "price" =>$product->price
+<<<<<<< d1f11094b78696c539f7a4bdbef218bf14c8359a
+>>>>>>> The real price is now displayed. The "product" page's been renamed to "detail" page. The template has also been applied to it.
+=======
 >>>>>>> The real price is now displayed. The "product" page's been renamed to "detail" page. The template has also been applied to it.
         );
 
@@ -225,15 +231,20 @@ class AppController extends Controller
         if($searching)
         {
             $products = $this->container->db->table('product')->where('title',  'like',  '%' . $searching . '%')->get();      
-            $data = ["products" => []];
+            $product_list = [];
             
             foreach ($products as $p)
             {   
-                print_r($p->title);
-                
+                $json = json_decode($p->image)->img;
+                $url = "img/" . $json[0]->url;
+                array_push($product_list, [
+                                            "id" => $p->id,
+                                            "title" => $p->title, 
+                                            "img" => $url, 
+                                            "price" => $p->price]);
             }
         }
 
-        return $this->view->render($response, 'App/search.twig');
+        return $this->view->render($response, 'App/search.twig', ["products" => $product_list]);
     }
 }
