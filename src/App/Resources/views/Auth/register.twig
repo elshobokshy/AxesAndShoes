@@ -2,88 +2,104 @@
 
 {% block body %}
 
-<div class="ui middle aligned center aligned auth grid">
-    <div class="column">
-        <h2 class="ui teal header">
-            <i class="user icon"></i> Create a new account
-        </h2>
-        <p id="geoError">
-        <form class="ui large form error" action="{{ path_for('register') }}" method="POST">
-            <div class="ui stacked segment">
-                <div class="field{% if has_error('username') %} error{% endif %}">
-                    <div class="ui left icon input">
-                        <i class="user icon"></i>
-                        <input type="text" name="username" placeholder="Username" value="{{ val('username') }}">
-                    </div>
-                </div>
-                <div class="field{% if has_error('email') %} error{% endif %}">
-                    <div class="ui left icon input">
-                        <i class="mail icon"></i>
-                        <input type="email" name="email" placeholder="Email" value="{{ val('email') }}">
-                    </div>
-                </div>
-                <div class="field{% if has_error('first_name') %} error{% endif %}">
-                    <div class="ui left icon input">
-                        <i class="user icon"></i>
-                        <input type="text" name="first_name" placeholder="First Name" value="{{ val('first_name') }}">
-                    </div>
-                </div>
-                <div class="field{% if has_error('last_name') %} error{% endif %}">
-                    <div class="ui left icon input">
-                        <i class="user icon"></i>
-                        <input type="text" name="last_name" placeholder="Last Name" value="{{ val('last_name') }}">
-                    </div>
-                </div>
-                <div class="field{% if has_error('city') %} error{% endif %}">
-                    <div class="ui left icon input">
-                        <i class="user icon"></i>
-                        <input type="text" id="city" name="city" placeholder="City" value="">
-                    </div>
-                </div>
-                <div class="field{% if has_error('country') %} error{% endif %}">
-                    <div class="ui left icon input">
-                        <i class="user icon"></i>
-                        <input type="text" id="country" name="country" placeholder="Country" value="">
-                    </div>
-                </div>
-                <div class="field{% if has_error('birthdate') %} error{% endif %}">
-                    <div class="ui left icon input">
-                        <i class="user icon"></i>
-                        <input type="date" name="birthdate" placeholder="Birthdate" value="{{ val('birthdate') }}">
+<div class="container">
+
+                <div class="col-md-6">
+                    <div class="box">
+                        <h1>New account</h1>
+
+                        <p class="lead">Not registered yet?</p>
+                        <hr>
+
+                        <form action="{{ path_for('register') }}" method="POST">
+                            <div class="form-group">
+                                <label for="username">Username</label>
+                                <input type="text" name="username" class="form-control" placeholder="Username" value="{{ val('username') }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="email" name="email" class="form-control" placeholder="Email" value="{{ val('email') }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="first_name">First name</label>
+                                <input type="text" name="first_name" class="form-control" placeholder="First Name" value="{{ val('first_name') }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="last_name">Last Name</label>
+                                <input type="text" name="last_name" class="form-control" placeholder="Last Name" value="{{ val('last_name') }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="city">City</label>
+                                <input type="text" id="city" name="city" class="form-control" placeholder="City" value="">
+                            </div>
+                            <div class="form-group">
+                                <label for="country">Country</label>
+                                <input type="text" id="country" name="country" class="form-control" placeholder="Country" value="">
+                            </div>
+                            <div class="form-group">
+                                <label for="birthdate">Birthdate</label>
+                                <input type="text" name="birthdate" class="form-control" placeholder="d/m/Y" value="{{ val('birthdate') }}">
+                            </div>
+                            <div class="form-group">
+                                <label for="password">Password</label>
+                                <input type="password" name="password" class="form-control" placeholder="Password">
+                            </div>
+                            <div class="form-group">
+                                <label for="password_confirm">Confirm password</label>
+                                <input type="password" name="password_confirm" class="form-control" placeholder="Confirm password">
+                            </div>
+                            <div class="text-center">
+                                {{ csrf() }}
+                                <button type="submit" class="btn btn-primary" value="Register"><i class="fa fa-user-md"></i> Register</button>
+                            </div>
+                            {% if has_errors() %}
+                                <div class="ui error message">
+                                    {% for paramErrors in errors() %}
+                                        {% for error in paramErrors %}
+                                            <p>{{ error }}</p>
+                                        {% endfor %}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </form>
                     </div>
                 </div>
 
-                <div class="field{% if has_error('password') %} error{% endif %}">
-                    <div class="ui left icon input">
-                        <i class="lock icon"></i>
-                        <input type="password" name="password" placeholder="Password">
+                <div class="col-md-6">
+                    <div class="box">
+                        <h1>Login</h1>
+
+                        <p class="lead">Already our customer?</p>
+
+                        <hr>
+
+                        <form action="{{ path_for('login') }}" method="POST">
+                            <div class="form-group">
+                                <label for="username">Username</label>
+                                <input type="text" class="form-control" name="username" id="email-modal" placeholder="Username">
+                            </div>
+                            <div class="form-group">
+                                <label for="password">Password</label>
+                                <input type="password" class="form-control" name="password" id="password" placeholder="Password">
+                            </div>
+                            <div class="text-center">
+                                {{ csrf() }}
+                                <button type="submit" class="btn btn-primary"><i class="fa fa-sign-in"></i> Log in</button>
+                            </div>
+                            {% if has_errors() %}
+                                <div class="alert alert-warning">
+                                    {% for error in errors('auth') %}
+                                        <p>{{ error }}</p>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </form>
                     </div>
                 </div>
-                <div class="field{% if has_error('password_confirm') %} error{% endif %}">
-                    <div class="ui left icon input">
-                        <i class="lock icon"></i>
-                        <input type="password" name="password_confirm" placeholder="Confirm password">
-                    </div>
-                </div>
-                {{ csrf() }}
-                <input type="submit" class="ui fluid large teal button" value="Register">
+
+
             </div>
-            {% if has_errors() %}
-                <div class="ui error message">
-                    {% for paramErrors in errors() %}
-                        {% for error in paramErrors %}
-                            <p>{{ error }}</p>
-                        {% endfor %}
-                    {% endfor %}
-                </div>
-            {% endif %}
-        </form>
-        <div class="ui message">
-            You already have an account? <a href="{{ path_for('login') }}">Sign in</a>
-        </div>
-    </div>
-</div>
-
+            <!-- /.container -->
 {% endblock %}
 
 {% block javascript %}
