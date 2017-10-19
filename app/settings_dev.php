@@ -13,7 +13,8 @@ return [
         'view' => [
             'twig' => [
                 'debug' => true,
-                'auto_reload' => true
+                'auto_reload' => true,
+                'cache' => false
             ]
         ],
 
