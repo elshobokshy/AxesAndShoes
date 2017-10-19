@@ -164,7 +164,7 @@ class AppController extends Controller
 
         return $this->view->render($response, 'App/add.twig', $data);
     }
-    
+
     public function search(Request $request, Response $response)
     {
         $searching = $request->getParam('search');

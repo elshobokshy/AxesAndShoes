@@ -3,76 +3,80 @@
 {% block body %}
 
 <div class="container">
-{% if isNull %}
-    <h1 style="margin: 20px;">The product you're looking for doesn't exist anymore. Sorry!</h1>
-{% else %}
-    <div class="row" id="productMain">
-        <div class="col-md-7 offset-md-1">
-            <div id="mainImage">
-                <img src="{{ main_img }}" alt="" class="img-dimension">
+    {% if isNull %}
+        <h1 style="margin: 20px;">The product you're looking for doesn't exist anymore. Sorry!</h1>
+    {% else %}
+        
+        <div class="row" id="productMain">
+            <div class="col-md-7 offset-md-1">
+                <div id="mainImage">
+                                <img src="{{ main_img }}" alt="" class="img-dimension">
+                </div>
             </div>
-        </div>
 
-        <div class="col-md-5 offset-md-1">
-            <div class="box">
-                <h1 class="text-center">{{ title }}</h1>
-                <p class="goToDescription"><a href="#details" class="scroll-to">Scroll to product details, material & care and sizing</a>
-                </p>
-                <p class="price">{{ price }}€</p>
+            <div class="col-md-5 offset-md-1">
+                <div class="box">
+                    <h1 class="text-center">{{ title }}</h1>
+                    <p class="goToDescription"><a href="#details" class="scroll-to">Scroll to product details, material & care and sizing</a>
+                    </p>
+                    <p class="price">{{ price }}€</p>
 
-                {% if logged %}
+                    {% if logged %}
                     <p class="text-center buttons">
                         <a href="#" class="btn btn-success"><i class="fa fa-shopping-cart"></i>Rent this product</a> 
                     </p>
-                {% else %}
+                    {% else %}
                     <p class="text-center buttons">
                         <a href="/login" class="btn btn-danger">You have to login to rent</a>
                     </p>
-                {% endif %}
-            </div>
-
-            {% if img %}
-                <div class="row" id="thumbs">
-                    {% for i in img %}
-                        <div class="col-xs-4">
-                            <a href="{{ i }}" class="thumb">
-                                <img src="{{ i }}" alt="" class="img-responsive">
-                            </a>
-                        </div>
-                    {% endfor %}
+                    {% endif %}
                 </div>
-            {% endif %}
+
+                {% if img %}
+                    <div class="row" id="thumbs">
+                        {% for i in img %}
+                            <div class="col-xs-4">
+                                <a href="{{ i }}" class="thumb">
+                                    <img src="{{ i }}" alt="" class="img-responsive">
+                                </a>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                
             </div>
         </div>
 
         <!-- détails d'un produit -->
-        <div class="box" id="details">
-            <h4>Description</h4>
-            <blockquote>
-                <p><em>{{ desc }}</em>
-                </p>
-            </blockquote>
+            <div class="box" id="details">
+                <p>
+                    <h4>Description</h4>
+                    <blockquote>
+                        <p><em>{{ desc }}</em>
+                        </p>
+                    </blockquote>
 
-            <h4>Material</h4>
-            <ul>
-                <li>{{ material }}</li>
-            </ul>
+                    <h4>Material</h4>
+                    <ul>
+                        <li>{{ material }}</li>
+                    </ul>
                     
-            <h4>Color</h4>
-            <ul>
-                <li>{{ color }}</li>
-            </ul>
+                    <h4>Color</h4>
+                    <ul>
+                        <li>{{ color }}</li>
+                    </ul>
                     
-            <h4>Size</h4>
-            <ul>
-                <li>{{ size }}</li>
-            </ul>
+                    <h4>Size</h4>
+                    <ul>
+                        <li>{{ size }}</li>
+                    </ul>
 
-            <h4>Waterproof</h4>
-            <ul>
-                <li>{{ waterproof }}</li>
-            </ul>
-        </div>
-{% endif %}
+                    <h4>Waterproof</h4>
+                    <ul>
+                        <li>{{ waterproof }}</li>
+                    </ul>
+            </div>
+    {% endif %}
 </div>
 {% endblock %}
