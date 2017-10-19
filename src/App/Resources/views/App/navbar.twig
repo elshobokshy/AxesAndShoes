@@ -86,6 +86,9 @@
                 </li>
                 {% if auth.check() %}
                     <li>
+                        <a href="{{ path_for('add') }}">Rent</b></a>
+                    </li>
+                    <li>
                         <a href="{{ path_for('profile') }}">Profile</b></a>
                     </li>
                 {% endif %}
