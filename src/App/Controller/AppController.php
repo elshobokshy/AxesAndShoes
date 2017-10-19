@@ -161,4 +161,21 @@ class AppController extends Controller
         return $this->view->render($response, 'App/add.twig', $data);
     }
     
+    public function search(Request $request, Response $response)
+    {
+        $searching = $request->getParam('search');
+        if($searching)
+        {
+            $products = $this->container->db->table('product')->where('title',  'like',  '%' . $searching . '%')->get();      
+            $data = ["products" => []];
+            
+            foreach ($products as $p)
+            {   
+                print_r($p->title);
+                
+            }
+        }
+
+        return $this->view->render($response, 'App/search.twig');
+    }
 }
