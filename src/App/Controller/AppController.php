@@ -30,16 +30,21 @@ class AppController extends Controller
         $product = $this->container->db->table('product')->find($id);
 
         if($product == NULL)
-            return $this->view->render($response, 'App/product.twig', array("isNull" => true));
+            return $this->view->render($response, 'App/detail.twig', array("isNull" => true));
 
         $val = $this->auth->check() ? true : false;
 
         $json = json_decode($product->image)->img;
 
-        $img = array();
-        for($i = 0 ; $i < sizeof($json) ; $i++)
+        $main_img = $_SERVER['REQUEST_URI'] . "/../../img/" . $json[0]->url;
+
+        if(sizeof($json) > 1)
         {
-            array_push($img, $_SERVER['REQUEST_URI'] . "/../../img/" . $json[$i]->url);
+            $img = array();
+            for($i = 0 ; $i < sizeof($json) ; $i++)
+            {
+                array_push($img, $_SERVER['REQUEST_URI'] . "/../../img/" . $json[$i]->url);
+            }
         }
 
         $data = array(
@@ -49,8 +54,15 @@ class AppController extends Controller
             "color" => $product->color, 
             "material" => $product->material,
             "size" => $product->size,
+<<<<<<< 951bcee37d81c18f2142860220515cb375b4e2af
             "waterproof" => $product->waterproof,
             "img" => $img
+=======
+            "waterproof" => $product->waterproof ? "Yes" : "No",
+            "main_img" => $main_img,
+            "img" => $img, 
+            "price" =>$product->price
+>>>>>>> The real price is now displayed. The "product" page's been renamed to "detail" page. The template has also been applied to it.
         );
 
         return $this->view->render($response, 'App/detail.twig', $data);
@@ -187,15 +199,20 @@ class AppController extends Controller
         if($searching)
         {
             $products = $this->container->db->table('product')->where('title',  'like',  '%' . $searching . '%')->get();      
-            $data = ["products" => []];
+            $product_list = [];
             
             foreach ($products as $p)
             {   
-                print_r($p->title);
-                
+                $json = json_decode($p->image)->img;
+                $url = "img/" . $json[0]->url;
+                array_push($product_list, [
+                                            "id" => $p->id,
+                                            "title" => $p->title, 
+                                            "img" => $url, 
+                                            "price" => $p->price]);
             }
         }
 
-        return $this->view->render($response, 'App/search.twig');
+        return $this->view->render($response, 'App/search.twig', ["products" => $product_list]);
     }
 }

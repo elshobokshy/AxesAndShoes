@@ -17,3 +17,4 @@ $app->get('/detail/{id}', 'app.controller:detail');
 $app->get('/detail/{id}', 'app.controller:detail');
 >>>>>>> Renaming the "product" page "detail"
 $app->get('/search', 'app.controller:search')->setname('search');
+$app->post('/search', 'app.controller:search')->setname('search');
