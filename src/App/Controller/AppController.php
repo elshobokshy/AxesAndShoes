@@ -29,17 +29,20 @@ class AppController extends Controller
     {
         $product = $this->container->db->table('product')->find($id);
 
-        if ($product == NULL)
-            return $this->view->render($response, 'App/product.twig', array("isNull" => true));
+        if($product == NULL)
+            return $this->view->render($response, 'App/detail.twig', array("isNull" => true));
 
         $val = $this->auth->check() ? true : false;
 
         $json = json_decode($product->image)->img;
 
-
-        $img = [];
-        for ($i = 0; $i < sizeof($json); $i++) {
-            array_push($img, $_SERVER['REQUEST_URI'] . "/../../img/" . $json[$i]->url);
+        if(sizeof($json) > 0)
+        {
+            $img = array();
+            for($i = 0 ; $i < sizeof($json) ; $i++)
+            {
+                array_push($img, $_SERVER['REQUEST_URI'] . "/../../img/" . $json[$i]->url);
+            }
         }
 
         $data = array(
@@ -50,7 +53,8 @@ class AppController extends Controller
             "material" => $product->material,
             "size" => $product->size,
             "waterproof" => $product->waterproof,
-            "img" => $img
+            "img" => $img,
+            "price" =>$product->price
         );
 
         return $this->view->render($response, 'App/detail.twig', $data);
@@ -160,24 +164,6 @@ class AppController extends Controller
 
         return $this->view->render($response, 'App/add.twig', $data);
     }
-    
-    public function search(Request $request, Response $response)
-    {
-        $searching = $request->getParam('search');
-        if($searching)
-        {
-            $products = $this->container->db->table('product')->where('title',  'like',  '%' . $searching . '%')->get();      
-            $data = ["products" => []];
-            
-            foreach ($products as $p)
-            {   
-                print_r($p->title);
-                
-            }
-        }
-
-        return $this->view->render($response, 'App/search.twig');
-    }
 
     public function search(Request $request, Response $response)
     {
@@ -185,15 +171,20 @@ class AppController extends Controller
         if($searching)
         {
             $products = $this->container->db->table('product')->where('title',  'like',  '%' . $searching . '%')->get();      
-            $data = ["products" => []];
+            $product_list = [];
             
             foreach ($products as $p)
             {   
-                print_r($p->title);
-                
+                $json = json_decode($p->image)->img;
+                $url = "img/" . $json[0]->url;
+                array_push($product_list, [
+                                            "id" => $p->id,
+                                            "title" => $p->title, 
+                                            "img" => $url, 
+                                            "price" => $p->price]);
             }
         }
 
-        return $this->view->render($response, 'App/search.twig');
+        return $this->view->render($response, 'App/search.twig', ["products" => $product_list]);
     }
 }
