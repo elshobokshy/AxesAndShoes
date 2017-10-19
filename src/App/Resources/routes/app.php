@@ -25,8 +25,12 @@ $app->get('/search', 'app.controller:search')->setname('search');
 $app->post('/search', 'app.controller:search')->setname('search');
 =======
 $app->get('/search', 'app.controller:search')->setname('search');
+<<<<<<< 0826f575d14aa7a3fcac1303e3a4394ecfb23f9f
 <<<<<<< d1f11094b78696c539f7a4bdbef218bf14c8359a
 >>>>>>> commit before rebase
 =======
 $app->post('/search', 'app.controller:search')->setname('search');
 >>>>>>> The real price is now displayed. The "product" page's been renamed to "detail" page. The template has also been applied to it.
+=======
+$app->post('/search', 'app.controller:search')->setname('search');
+>>>>>>> Commit before rebasing
