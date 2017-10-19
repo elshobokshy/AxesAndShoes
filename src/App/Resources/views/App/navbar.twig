@@ -84,9 +84,11 @@
                 <li>
                     <a href="#">Products </b></a>
                 </li>
-                <li>
-                    <a href="{{ path_for('profile') }}">Profile</b></a>
-                </li>
+                {% if auth.check() %}
+                    <li>
+                        <a href="{{ path_for('profile') }}">Profile</b></a>
+                    </li>
+                {% endif %}
             </ul>
         </div>
         <!--/.nav-collapse -->
