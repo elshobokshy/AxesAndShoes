@@ -21,7 +21,7 @@ class AppController extends Controller
         }
     }
     
-    public function product(Request $request, Response $response, $id)
+    public function detail(Request $request, Response $response, $id)
     {
         $product = $this->container->db->table('product')->find($id);
 
@@ -52,7 +52,7 @@ class AppController extends Controller
             "img" => $img
         );
 
-        return $this->view->render($response, 'App/product.twig', $data);
+        return $this->view->render($response, 'App/detail.twig', $data);
     }
 
     public function search(Request $request, Response $response)
