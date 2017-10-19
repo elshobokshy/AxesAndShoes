@@ -4,7 +4,9 @@
 {% block body %}
     <div class="row">
         <div class="col-sm-3">
-            {{ dump(f) }}
+            <pre>
+                {{ dump(f) }}
+            </pre>
             <!-- Filters -->
             {% include 'Gallery/filters.twig' %}
         </div>
