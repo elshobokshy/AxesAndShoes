@@ -23,7 +23,7 @@ class AuthController extends Controller
                     $this->flash('success', 'You are now logged in.');
                     return $this->redirect($response, 'home');
                 } else {
-                    $this->validator->addError('auth', 'Bad username or password');
+                    $this->validator->addError('auth', 'Bad username or password!');
                 }
             } catch (ThrottlingException $e) {
                 $this->validator->addError('auth', 'Too many attempts!');
@@ -64,7 +64,7 @@ class AuthController extends Controller
                 'last_name' => V::length(1, 25)->alpha(),
                 'city' => V::length(1, 25)->alpha()->noWhitespace(),
                 'country' => V::length(1, 25)->alpha()->noWhitespace(),
-                'birthdate' => V::Date('Y-m-d')
+                'birthdate' => V::Date('d/m/Y')
             ]);
 
             if ($this->auth->findByCredentials(['login' => $username])) {

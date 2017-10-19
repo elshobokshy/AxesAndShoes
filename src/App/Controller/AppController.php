@@ -14,18 +14,18 @@ class AppController extends Controller
 
     public function profile(Request $request, Response $response)
     {
-        if($this->auth->guest()) {
+        if ($this->auth->guest()) {
             return $this->view->render($response, 'Auth/login.twig');
         } else if ($user = $this->auth->getUser()) {
             return $this->view->render($response, 'App/profile.twig');
         }
     }
-    
+
     public function product(Request $request, Response $response, $id)
     {
         $product = $this->container->db->table('product')->find($id);
 
-        if($product == NULL)
+        if ($product == NULL)
             return $this->view->render($response, 'App/product.twig', array("isNull" => true));
 
         $val = $this->auth->check() ? true : false;
@@ -37,22 +37,21 @@ class AppController extends Controller
 
 
         $img = [];
-        for($i = 0 ; $i < sizeof($json) ; $i++)
-        {
-            array_push($img,  $_SERVER['REQUEST_URI'] . '/../../img/' . $json[$i]->url); //TODO a changer avant rendu
+        for ($i = 0; $i < sizeof($json); $i++) {
+            array_push($img, $_SERVER['REQUEST_URI'] . "/../../img/" . $json[$i]->url);
         }
 
         $data = array(
             "logged" => $val,
             "title" => $product->title,
-            "desc" => $product->description, 
-            "color" => $color->colorName, 
+            "desc" => $product->description,
+            "color" => $color->colorName,
             "material" => $material->materialName,
             "size" => $product->size,
             "waterproof" => $product->waterproof ? "Yes" : "No",
             "img" => $img
         );
-        
+
         return $this->view->render($response, 'App/product.twig', $data);
     }
 }

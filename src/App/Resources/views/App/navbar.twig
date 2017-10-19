@@ -1,0 +1,122 @@
+<<<<<<< HEAD
+=======
+
+                    {{ app.request }}
+<!-- *** TOPBAR ***
+ ________________________________________________________ -->
+<div id="top">
+    <div class="container">
+        <div class="col-xs-offset-6 col-md-6" data-animate="fadeInDown">
+            <ul class="menu">
+                {% if auth.check() %}
+                    <li><a href="{{ path_for('profile') }}" class="ui circular button">Welcome, {{ auth.user.username }}!</a>
+                    </li>
+                    <li><a href="{{ path_for('logout') }}">Logout</a>
+                    </li>
+                {% else %}
+                    <li><a href="#" data-toggle="modal" data-target="#login-modal">Login</a>
+                    </li>
+                    <li><a href="{{ path_for('register') }}">Register</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+    
+    <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="Login" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="Login">Login</h4>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ path_for('login') }}" method="POST">
+                        <div class="form-group">
+                            <input type="text" class="form-control" name="username" id="email-modal" placeholder="Username">
+                        </div>
+                        <div class="form-group">
+                            <input type="password" class="form-control" name="password" id="password-modal" placeholder="Password">
+                        </div>
+                        <p class="text-center">
+                            {{ csrf() }}
+                            <button type="submit" class="btn btn-primary"><i class="fa fa-sign-in"></i> Log in</button>
+                        </p>
+                        {% if has_errors() %}
+                            <div class="alert alert-warning">
+                                {% for error in errors('auth') %}
+                                    <p>{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </form>
+                    <p class="text-center text-muted">Not registered yet?</p>
+                    <p class="text-center text-muted"><a href="{{ path_for('register') }}"><strong>Register now</strong></a>! </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- *** TOP BAR END *** -->
+<!-- *** NAVBAR ***
+ ________________________________________________________ -->
+<div class="navbar navbar-default yamm" role="navigation" id="navbar">
+    <div class="container">
+        <div class="navbar-header">
+            <a class="navbar-brand home" href="{{ path_for('home') }}" data-animate-hover="bounce">
+                <img src="{{ asset('img/logo.png') }}" alt="Obaju logo" class="hidden-xs">
+                <img src="{{ asset('img/logo-small.png') }}" alt="Obaju logo" class="visible-xs"><span class="sr-only">Obaju - go to homepage</span>
+            </a>
+            <div class="navbar-buttons">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navigation">
+                    <span class="sr-only">Toggle navigation</span>
+                    <i class="fa fa-align-justify"></i>
+                </button>
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#search">
+                    <span class="sr-only">Toggle search</span>
+                    <i class="fa fa-search"></i>
+                </button>
+            </div>
+        </div>
+        <!--/.navbar-header -->
+        <div class="navbar-collapse collapse" id="navigation">
+            <ul class="nav navbar-nav navbar-left">
+                <li class="active">
+                    <a href="{{ path_for('home') }}">Home</a>
+                </li>
+                <li>
+                    <a href="#">Products </b></a>
+                </li>
+                {% if auth.check() %}
+                    <li>
+                        <a href="{{ path_for('profile') }}">Profile</b></a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+        <!--/.nav-collapse -->
+        <div class="navbar-buttons">
+            <!--/.nav-collapse -->
+            <div class="navbar-collapse collapse right" id="search-not-mobile">
+                <button type="button" class="btn navbar-btn btn-primary" data-toggle="collapse" data-target="#search">
+                    <span class="sr-only">Toggle search</span>
+                    <i class="fa fa-search"></i>
+                </button>
+            </div>
+        </div>
+        <div class="collapse clearfix" id="search">
+            <form class="navbar-form" role="search">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search">
+                    <span class="input-group-btn">
+		<button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
+	    </span>
+                </div>
+            </form>
+        </div>
+        <!--/.nav-collapse -->
+    </div>
+    <!-- /.container -->
+</div>
+<!-- /#navbar -->
+<!-- *** NAVBAR END *** -->
+>>>>>>> dd65677a962f559a02f797ebbd5f3921bda5184c
