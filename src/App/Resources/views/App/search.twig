@@ -2,6 +2,7 @@
 
 {% block body %}
 
+<<<<<<< 38375fb6be378e7e2b4f4b89b1e6c4ad29941701
     <form action="{{ path_for('search') }}" method="POST">
         <input type="text" class="form-control" placeholder="Search" name="search">
         {{ csrf() }}
@@ -24,4 +25,11 @@
             </div>
         {% endfor %}
     </div>
+=======
+    <form action="/search">
+        <input type="text" class="form-control" placeholder="Search" name="search">
+        <button type="submit" class="btn btn-default">Submit</button>
+    </form>
+
+>>>>>>> commit before rebase
 {% endblock %}
