@@ -1,0 +1,50 @@
+{% extends 'layout.twig' %}
+
+{% block body %}
+
+{% if isNull %}
+    <h1 style="margin: 20px;">The product you're looking for doesn't exist anymore. Sorry!</h1>
+{% else %}
+    <div class="panel panel-default" style="margin: 50px">
+        <div class="panel-heading"> <h2> {{title}} </h2> </div>
+        <div class="panel-body">
+            <strong>Descritpion :</strong> <br>
+            {{desc}}
+
+            <br><br>
+            <ul class="list-group">
+                <li class="list-group-item"><strong>Color : </strong> {{color}}</li>
+                <li class="list-group-item"><strong>Material : </strong> {{material}}</li>
+                <li class="list-group-item"><strong>Size : </strong> {{size}}</li>
+                <li class="list-group-item"><strong>Waterproof : </strong> {{waterproof}} </li>
+            </ul>
+        
+            <hr>
+            
+            <div class="row">
+                {% for i in img %}
+                    <div class="col-xs-6 col-md-3">
+                        <div class="thumbnail">
+                            <img src="{{ i }}" alt="Img1" style="height: 250px">
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+    {% if logged == true %}
+        <!-- Button to show when the user is logged in -->
+        <div style="width: 200px; margin: auto; text-align: center">
+            <button type="button" class="btn btn-success btn-lg" style="margin: 5px">Rent this product</button>
+        </div>
+    {% else %}
+        <!-- Button to show when the user's NOT logged in -->
+        <div style="width: 400px; margin: 0 auto; text-align: center">
+            <form action="/login">
+                <button type="submit" class="btn btn-danger btn-lg" style="margin: 5px">You have to login to rent a product</button>
+            </form>
+        </div>
+    {% endif %}
+{% endif %}
+
+{% endblock %}
