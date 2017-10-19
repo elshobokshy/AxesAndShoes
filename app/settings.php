@@ -1,17 +1,14 @@
 <?php
 
 return [
-    'env' => 'dev',
+    'env' => 'prod',
     'settings' => [
-
-        'displayErrorDetails' => true,
+        'displayErrorDetails' => false,
 
         'view' => [
             'templates_path' => dirname(__DIR__) . '/src/App/Resources/views',
             'twig' => [
-//                'cache' => dirname(__DIR__) . '/var/cache/twig',
-                'cache' => false,
-                'debug' => true,
+                'cache' => dirname(__DIR__) . '/var/cache/twig'
             ]
         ],
 
