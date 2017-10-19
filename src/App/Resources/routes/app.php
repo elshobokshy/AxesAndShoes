@@ -2,6 +2,7 @@
 
 $app->get('/', 'app.controller:home')->setName('home');
 $app->get('/profile', 'app.controller:profile')->setName('profile');
+<<<<<<< e68d9af617e9edd242d6500169578758c29b6eda
 <<<<<<< a05df651fb50e307d059dac23205b0fcd1d76d8c
 <<<<<<< 639f634667805bd4c70962adab8cc88a5f2caf77
 $app->get('/product/{id}', 'app.controller:product');
@@ -14,6 +15,9 @@ $app->get('/detail/{id}', 'app.controller:detail');
 >>>>>>> Renaming the "product" page "detail"
 =======
 >>>>>>> commit before rebase
+=======
+$app->get('/detail/{id}', 'app.controller:detail');
+>>>>>>> Renaming the "product" page "detail"
 =======
 $app->get('/detail/{id}', 'app.controller:detail');
 >>>>>>> Renaming the "product" page "detail"

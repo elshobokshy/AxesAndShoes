@@ -66,6 +66,7 @@ class AppController extends Controller
         );
 
         return $this->view->render($response, 'App/detail.twig', $data);
+<<<<<<< e68d9af617e9edd242d6500169578758c29b6eda
 <<<<<<< a05df651fb50e307d059dac23205b0fcd1d76d8c
     }
 
@@ -214,6 +215,8 @@ class AppController extends Controller
         }
 
         return $this->view->render($response, 'App/search.twig', ["products" => $product_list]);
+=======
+>>>>>>> Renaming the "product" page "detail"
     }
 
     public function search(Request $request, Response $response)
