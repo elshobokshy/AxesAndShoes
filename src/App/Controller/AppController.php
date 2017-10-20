@@ -34,9 +34,6 @@ class AppController extends Controller
 
         $val = $this->auth->check() ? true : false;
 
-        $color = $this->container->db->table('color')->find($product->color_id);
-        $material = $this->container->db->table('material')->find($product->material_id);
-
         $json = json_decode($product->image)->img;
 
         $img = array();
@@ -49,10 +46,10 @@ class AppController extends Controller
             "logged" => $val,
             "title" => $product->title,
             "desc" => $product->description, 
-            "color" => $color->colorName, 
-            "material" => $material->materialName,
+            "color" => $product->color, 
+            "material" => $product->material,
             "size" => $product->size,
-            "waterproof" => $product->waterproof ? "Yes" : "No",
+            "waterproof" => $product->waterproof,
             "img" => $img
         );
 
