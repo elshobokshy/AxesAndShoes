@@ -10,14 +10,30 @@ class Product extends Model
 
     protected $primaryKey = 'id';
 
-    public function colors()
+/*    public function colors() TODO comprendre ça
     {
         return $this->hasMany('Color', 'id', 'id')->orderBy('name', 'ASC');
-    }
+    }*/
 
-    public function materials()
-    {
-        return $this->hasMany('Material', 'id', 'id')->orderBy('name', 'ASC');
+    protected $fillable = [
+        'title',
+        'description',
+        'size',
+        'waterproof',
+        'price',
+        'material',
+        'color',
+        'image',
+    ];
+
+    public $timestamps = false;
+
+    public function getImgUrl() {
+        $array = json_decode($this->image);
+        foreach ($array->img as $item) {
+            $tmp[] = $item;
+        }
+        return $tmp;
     }
 
     public static function getToRent()

@@ -8,11 +8,6 @@ class Material extends Model
 {
     protected $table = 'material';
     protected $primaryKey = 'id';
-
-    protected $fillable = [
-        'materialName'
-    ];
-
     public $timestamps = false;
 
     public function products()

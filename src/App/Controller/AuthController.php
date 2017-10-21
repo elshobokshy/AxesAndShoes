@@ -21,7 +21,7 @@ class AuthController extends Controller
             try {
                 if ($this->auth->authenticate($credentials, $remember)) {
                     $this->flash('success', 'You are now logged in.');
-                    return $this->redirect($response, 'home');
+                    return $this->redirect($response, 'profile');
                 } else {
                     $this->validator->addError('auth', 'Bad username or password!');
                 }
