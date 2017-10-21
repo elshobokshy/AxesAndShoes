@@ -110,11 +110,12 @@ class AppController extends Controller
                     $name = uniqid('img-'.date('Ymd').'-');
                     if(isset($_FILES['image']['tmp_name'][$i]) ) {
                         if (move_uploaded_file($_FILES['image']['tmp_name'][$i], $img . $name) === true) {
-                            $conc = $conc . '"url":"'. $name . '",';
+                            $ext = pathinfo($_FILES['image']['name'][$i], PATHINFO_EXTENSION);
+                            $conc = $conc . ',{' . '"url":"'. $name . '.' . $ext . '"}';
                         }
                     }
                 }
-                $jsonImgs = '{"img":[{'. $conc .'}]}';
+                $jsonImgs = '{"img":[{'. substr($conc,2) .']}';
             }
 
             if (Product::where('title', '=', $title)->exists()) {
@@ -147,7 +148,7 @@ class AppController extends Controller
 
                 $this->flash('success', 'Your shoes has been put to rent to the public.');
 
-                return $this->redirect($response, 'home');
+                return $this->redirect($response, 'add');
             }
         }
 
