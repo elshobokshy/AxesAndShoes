@@ -1,7 +1,7 @@
 <div>
     {% for name, messages in flash.getMessages() %}
         <div class="alert alert-info">
-            <div class="header fa-align-center">
+            <div class="text-center">
                 {% for message in messages %}
                     {{ message }}
                 {% endfor %}
