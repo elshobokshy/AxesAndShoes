@@ -22,8 +22,7 @@ class Product extends Model
 
     public function getToRent()
     {
-        $now = new \DateTime('now');
-        return Product::where('dateToRent' <= $now)->orderBy('dateToRent','DESC');
+        return Product::where('dateToRent', '<=', date('Y-m-d'))->orderBy('dateToRent','DESC');
     }
 
     public function getMinSize()

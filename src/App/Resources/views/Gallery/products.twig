@@ -1,0 +1,52 @@
+
+{% for product in products %}
+<div class="col-md-4 col-sm-6">
+    <div class="product">
+        <div class="flip-container">
+            <div class="flipper">
+                <div class="front">
+                   {# <a href="{{ path_for('product') }}/{{ product.id }}">#}
+                        <img src="{{ product }}" alt="img" class="img-responsive">
+                    {#</a>#}
+                </div>
+                <div class="back">
+                    <a href="detail.html">
+                        <img src="img/product2_2.jpg" alt="img" class="img-responsive">
+                    </a>
+                </div>
+            </div>
+        </div>
+        <a href="detail.html" class="invisible">
+            <img src="img/product2.jpg" alt="" class="img-responsive">
+        </a>
+        <div class="text">
+            <h3><a href="detail.html">{{ product.title }}</a></h3>
+            <p class="price">${{ product.price }}</p>
+            <p class="buttons">
+                <a href="detail.html" class="btn btn-default">View detail</a>
+                <a href="basket.html" class="btn btn-primary"><i class="fa fa-shopping-cart"></i>Add to cart</a>
+            </p>
+        </div>
+        <!-- /.text -->
+
+        <div class="ribbon sale">
+            <div class="theribbon">SALE</div>
+            <div class="ribbon-background"></div>
+        </div>
+        <!-- /.ribbon -->
+
+        <div class="ribbon new">
+            <div class="theribbon">NEW</div>
+            <div class="ribbon-background"></div>
+        </div>
+        <!-- /.ribbon -->
+
+        <div class="ribbon gift">
+            <div class="theribbon">GIFT</div>
+            <div class="ribbon-background"></div>
+        </div>
+        <!-- /.ribbon -->
+    </div>
+    <!-- /.product -->
+</div>
+{% endfor %}
