@@ -16,6 +16,7 @@ class Product extends Model
     }*/
 
     protected $fillable = [
+        'dateToRent',
         'title',
         'description',
         'size',
@@ -35,6 +36,13 @@ class Product extends Model
         }
         return $tmp;
     }
+
+    public function getMainImg() {
+        $a = $this->getImgUrl();
+        return $a[0];
+    }
+
+
 
     public static function getToRent()
     {

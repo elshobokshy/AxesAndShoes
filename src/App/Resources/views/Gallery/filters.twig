@@ -1,6 +1,6 @@
 <div class="panel panel-default sidebar-menu">
     <div class="panel-heading">
-        <h3 class="panel-title">Filters<a class="btn btn-xs btn-danger pull-right" href="#"><i
+        <h3 class="panel-title">Filters<a class="btn btn-xs btn-danger pull-right" href="{{ url }}"><i
                         class="fa fa-times-circle"></i> Clear</a></h3>
     </div>
     <div class="panel-body">
@@ -9,22 +9,26 @@
                 <h5>Sizes</h5>
                 <div class="form-group">
                     <label for="minSize"> From </label>
-                    <input type="number" id="minSize" name="minSize" value="{{ f.minSize }}">
+                    <input class="input-sm pull-right" type="number" id="minSize" name="minSize"
+                           value="{{ f.minSize }}">
                 </div>
                 <div class="form-group">
                     <label for="maxSize"> To </label>
-                    <input type="number" id="maxSize"  name="maxSize" value="{{ f.maxSize }}">
+                    <input class="input-sm pull-right" type="number" id="maxSize" name="maxSize"
+                           value="{{ f.maxSize }}">
                 </div>
             </div>
             <div class="form-group">
                 <h5>Prices</h5>
                 <div class="form-group">
                     <label for="minPrice"> From </label>
-                    <input type="number" id="minPrice" name="minPrice" value="{{ f.minPrice }}">
+                    <input class="input-sm pull-right" type="number" id="minPrice" name="minPrice"
+                           value="{{ f.minPrice }}">
                 </div>
                 <div class="form-group">
                     <label for="maxPrice"> To </label>
-                    <input type="number" id="maxPrice" name="maxPrice" value="{{ f.maxPrice }}">
+                    <input class="input-sm pull-right" type="number" id="maxPrice" name="maxPrice"
+                           value="{{ f.maxPrice }}">
                 </div>
             </div>
             <div class="form-group">
@@ -33,7 +37,10 @@
                     <div class="checkbox">
                         <label>
                             <input type="checkbox"
-                                   name="materials[{{ material }}]" > {{ material }}
+                                    {% if material in f.materials %}
+                                        checked
+                                    {% endif %}
+                                   name="materials[]" value="{{ material }}"> {{ material }}
                         </label>
                     </div>
                 {% endfor %}
@@ -43,12 +50,27 @@
                 {% for color in colors %}
                     <div class="checkbox">
                         <label>
-                            <input type="checkbox" name="colors[{{ color }}]"> {{ color }}
+                            <input type="checkbox"
+                                    {% if color in f.colors %}
+                                        checked
+                                    {% endif %}
+                                   name="colors[{{ color }}]" value="{{ color }}"> {{ color }}
                         </label>
                     </div>
                 {% endfor %}
             </div>
-
+            <div class="form-group">
+                <h5>Other</h5>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox"
+                                {% if f.waterproof %}
+                                    checked
+                                {% endif %}
+                               name="waterproof"> Only waterproof
+                    </label>
+                </div>
+            </div>
             {{ csrf() }}
             <button class="btn btn-default btn-sm btn-primary"><i class="fa fa-pencil"></i> Apply</button>
         </form>

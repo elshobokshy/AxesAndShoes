@@ -68,7 +68,7 @@ class AppController extends Controller
             $material = $request->getParam('material');
             $color = $request->getParam('color');
 
-            $imgs = array();
+            $imgs = [];
             $cnt = count($_FILES['image']);
 
             $allowed =  array('gif','png' ,'jpg', 'jpeg');
@@ -126,6 +126,7 @@ class AppController extends Controller
                 $product = new Product();
 
                 $credentials = [
+
                     'title' => $title,
                     'description' => $description,
                     'size' => $password,
@@ -135,7 +136,7 @@ class AppController extends Controller
                     'color' => $color,
                     'image' => $files
                 ];
-
+                $product->dateToRent = date('Y-m-d');
                 $product->title = $title;
                 $product->description = $description;
                 $product->size = $size;
