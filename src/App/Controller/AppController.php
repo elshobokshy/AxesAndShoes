@@ -20,36 +20,33 @@ class AppController extends Controller
     {
         if ($this->auth->guest()) {
             return $this->view->render($response, 'Auth/login.twig');
-        } else if ($user = $this->auth->getUser()) {
-            return $this->view->render($response, 'App/profile.twig');
         }
+        return $this->view->render($response, 'App/profile.twig');
     }
-    
+
     public function detail(Request $request, Response $response, $id)
     {
-        $product = $this->container->db->table('product')->find($id);
-
-        if($product == NULL)
-            return $this->view->render($response, 'App/detail.twig', array("isNull" => true));
+        if (!($product = Product::find($id)))
+            return $this->view->render($response, 'App/detail.twig', array('isNull' => true));
 
         $json = json_decode($product->image)->img;
 
         $img = array();
         for($i = 0 ; $i < sizeof($json) ; $i++)
         {
-            array_push($img, "img/" . $json[$i]->url);
+            array_push($img, "img/" . $json[$i]->url); 
         }
 
         $data = array(
-            "logged" => $this->auth->check(),
-            "title" => $product->title,
-            "desc" => $product->description,
-            "color" => $product->color, 
-            "material" => $product->material,
-            "size" => $product->size,
-            "waterproof" => $product->waterproof,
-            "img" => $img,
-            "price" =>$product->price
+            'logged' => $this->auth->check(),
+            'title' => $product->title,
+            'desc' => $product->description,
+            'color' => $product->color,
+            'material' => $product->material,
+            'size' => $product->size,
+            'waterproof' => $product->waterproof,
+            'img' => $img,
+            'price' => $product->price
         );
 
         if($request->isPost())
@@ -78,14 +75,15 @@ class AppController extends Controller
             {
                 $this->validator->addError('date', 'The specified date is invalid!');
             }
+            $data['invalid_date'] = true;
         }
         
         return $this->view->render($response, 'App/detail.twig', $data);
     }
 
     public function add(Request $request, Response $response)
-    {   
-        
+    {
+
         if ($request->isPost()) {
             $title = $request->getParam('title');
             $description = $request->getParam('description');
@@ -95,33 +93,31 @@ class AppController extends Controller
             $material = $request->getParam('material');
             $color = $request->getParam('color');
 
-            $imgs = [];
             $cnt = count($_FILES['image']);
 
-            $allowed =  array('gif','png' ,'jpg', 'jpeg');
-            $noErrors = '1';
-            
+            $allowed = ['gif', 'png', 'jpg', 'jpeg'];
+            $noErrors = 1;
+
             // Loop to make sure every item uploaded is an image with an extension in $allowed
-            for($i = 0 ; $i < $cnt ; $i++) {
-                if(isset($_FILES['image']['name'][$i])) {
-                    $filename = $_FILES['image']['name'][$i];      
+            for ($i = 0; $i < $cnt; $i++) {
+                if (isset($_FILES['image']['name'][$i])) {
+                    $filename = $_FILES['image']['name'][$i];
                     $ext = pathinfo($filename, PATHINFO_EXTENSION);
-                    if( !in_array($ext,$allowed) ) {
-                        $noErrors = '0';
+                    if (!in_array($ext, $allowed, true)) {
+                        $noErrors = 0;
                     }
                 }
             }
 
-            if( $noErrors = '0' ) {
+            if (!$noErrors) {
                 $this->validator->addError('image', 'Image needs to only have these extensions : gif, png, jpg, jpeg.');
             }
-            
-            
+
             $this->validator->request($request, [
                 'title' => V::notEmpty()->alpha()->length(3, 25),
                 'description' => V::notEmpty()->length(5, 1000)->alpha(),
-                'size' => V::notEmpty()->noWhitespace()->Numeric()->positive()->between(1, 255),
-                'price' => V::notEmpty()->noWhitespace()->Numeric()->positive()->between(1, 999),
+                'size' => V::notEmpty()->noWhitespace()->numeric()->positive()->between(1, 255),
+                'price' => V::notEmpty()->noWhitespace()->numeric()->positive()->between(1, 999),
                 'waterproof' => V::notEmpty()->noWhitespace()->length(1, 3),
                 'material' => V::notEmpty()->length(3, 20),
                 'color' => V::notEmpty()->length(3, 20),
@@ -132,17 +128,16 @@ class AppController extends Controller
             $conc = '';
 
             // Changing the name of each file uploaded and uploading it in img folder
-            if( $noErrors = '1' ) {
-                for($i = 0 ; $i < $cnt ; $i++) {
-                    $name = uniqid('img-'.date('Ymd').'-');
-                    if(isset($_FILES['image']['tmp_name'][$i]) ) {
+            if ($noErrors = 1) {
+                for ($i = 0; $i < $cnt; $i++) {
+                    $name = uniqid('img-' . date('Ymd') . '-' . pathinfo($_FILES['image']['name'][$i], PATHINFO_EXTENSION), true);
+                    if (isset($_FILES['image']['tmp_name'][$i])) {
                         if (move_uploaded_file($_FILES['image']['tmp_name'][$i], $img . $name) === true) {
-                            $ext = pathinfo($_FILES['image']['name'][$i], PATHINFO_EXTENSION);
-                            $conc = $conc . ',{' . '"url":"'. $name . '.' . $ext . '"}';
+                            $conc = $conc . ',{' . '"url":"' . $name . '"}';
                         }
                     }
                 }
-                $jsonImgs = '{"img":[{'. substr($conc,2) .']}';
+                $jsonImgs = '{"img":[{' . substr($conc, 2) . ']}';
             }
 
             if (Product::where('title', '=', $title)->exists()) {
@@ -152,17 +147,6 @@ class AppController extends Controller
             if ($this->validator->isValid()) {
                 $product = new Product();
 
-                $credentials = [
-
-                    'title' => $title,
-                    'description' => $description,
-                    'size' => $password,
-                    'waterproof' => $waterproof,
-                    'price' => $price,
-                    'material' => $material,
-                    'color' => $color,
-                    'image' => $files
-                ];
                 $product->dateToRent = date('Y-m-d');
                 $product->title = $title;
                 $product->description = $description;
@@ -172,7 +156,6 @@ class AppController extends Controller
                 $product->color = $color;
                 $product->material = $material;
                 $product->image = $jsonImgs;
-                $product->dateToRent = date("Y-m-d");
                 $product->save();
 
                 $this->flash('success', 'Your shoes has been put to rent to the public.');
@@ -182,8 +165,8 @@ class AppController extends Controller
         }
 
         $data = [
-            "colors" => Color::all(),
-            "materials" => Material::all(),
+            'colors' => Color::all(),
+            'materials' => Material::all(),
         ];
 
         return $this->view->render($response, 'App/add.twig', $data);
@@ -191,24 +174,21 @@ class AppController extends Controller
 
     public function search(Request $request, Response $response)
     {
-        $searching = $request->getParam('search');
-        if($searching)
-        {
-            $products = $this->container->db->table('product')->where('title',  'like',  '%' . $searching . '%')->get();      
+        if ($searching = $request->getParam('search')) {
+            $products = Product::where('title', 'like', '%' . $searching . '%')->get();
             $product_list = [];
-            
-            foreach ($products as $p)
-            {   
+
+            foreach ($products as $p) {
                 $json = json_decode($p->image)->img;
-                $url = "img/" . $json[0]->url;
-                array_push($product_list, [
-                                            "id" => $p->id,
-                                            "title" => $p->title, 
-                                            "img" => $url, 
-                                            "price" => $p->price]);
+                $url = 'img/' . $json[0]->url;
+                $product_list[] = [
+                    'id' => $p->id,
+                    'title' => $p->title,
+                    'img' => $url,
+                    'price' => $p->price];
             }
         }
 
-        return $this->view->render($response, 'App/search.twig', ["products" => $product_list]);
+        return $this->view->render($response, 'App/search.twig', ['products' => $product_list]);
     }
 }
