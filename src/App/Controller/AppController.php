@@ -144,11 +144,10 @@ class AppController extends Controller
             // Changing the name of each file uploaded and uploading it in img folder
             if( $noErrors = '1' ) {
                 for($i = 0 ; $i < $cnt ; $i++) {
-                    $name = uniqid('img-'.date('Ymd').'-');
+                    $name = uniqid('img-'.date('Ymd').'-' . pathinfo($_FILES['image']['name'][$i], PATHINFO_EXTENSION));
                     if(isset($_FILES['image']['tmp_name'][$i]) ) {
                         if (move_uploaded_file($_FILES['image']['tmp_name'][$i], $img . $name) === true) {
-                            $ext = pathinfo($_FILES['image']['name'][$i], PATHINFO_EXTENSION);
-                            $conc = $conc . ',{' . '"url":"'. $name . '.' . $ext . '"}';
+                            $conc = $conc . ',{' . '"url":"'. $name . '"}';
                         }
                     }
                 }
