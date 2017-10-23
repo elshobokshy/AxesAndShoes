@@ -6,10 +6,21 @@
 {% if isNull %}
     <h1 style="margin: 20px;">The product you're looking for doesn't exist anymore. Sorry!</h1>
 {% else %}
+
+    {% if has_errors() %}
+        <div class="alert alert-warning">
+            {% for paramErrors in errors() %}
+                {% for error in paramErrors %}
+                    <p>{{ error }}</p>
+                {% endfor %}
+            {% endfor %}
+        </div>
+    {% endif %}
+
     <div class="row" id="productMain">
         <div class="col-md-7 offset-md-1">
             <div id="mainImage">
-                <img src="{{ main_img }}" alt="" class="img-dimension">
+                <img src="{{ asset( img.0 ) }}" alt="" class="img-dimension">
             </div>
         </div>
 
@@ -22,9 +33,6 @@
 
                 {% if logged %}
                     <form class="text-center" method="post">
-                        {% if invalid_date %}
-                            <p>The specified date is not valid!</p>
-                        {% endif %}
                         <input type="date" placeholder="YYYY/mm/dd" name="date">
                         {{ csrf() }}
                         <input type="submit" class="btn btn-success" value="Rent this product"> 
@@ -40,8 +48,8 @@
                 <div class="row" id="thumbs">
                     {% for i in img %}
                         <div class="col-xs-4">
-                            <a href="{{ i }}" class="thumb">
-                                <img src="{{ i }}" alt="" class="img-responsive">
+                            <a href="{{ asset(i) }}" class="thumb">
+                                <img src="{{ asset(i) }}" alt="" class="img-responsive">
                             </a>
                         </div>
                     {% endfor %}
