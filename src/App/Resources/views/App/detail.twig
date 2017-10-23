@@ -2,49 +2,77 @@
 
 {% block body %}
 
+<div class="container">
 {% if isNull %}
     <h1 style="margin: 20px;">The product you're looking for doesn't exist anymore. Sorry!</h1>
 {% else %}
-    <div class="panel panel-default" style="margin: 50px">
-        <div class="panel-heading"> <h2> {{title}} </h2> </div>
-        <div class="panel-body">
-            <strong>Descritpion :</strong> <br>
-            {{desc}}
-
-            <br><br>
-            <ul class="list-group">
-                <li class="list-group-item"><strong>Color : </strong> {{color}}</li>
-                <li class="list-group-item"><strong>Material : </strong> {{material}}</li>
-                <li class="list-group-item"><strong>Size : </strong> {{size}}</li>
-                <li class="list-group-item"><strong>Waterproof : </strong> {{waterproof}} </li>
-            </ul>
-        
-            <hr>
-            
-            <div class="row">
-                {% for i in img %}
-                    <div class="col-xs-6 col-md-3">
-                        <div class="thumbnail">
-                            <img src="{{ i }}" alt="Img1" style="height: 250px">
-                        </div>
-                    </div>
-                {% endfor %}
+    <div class="row" id="productMain">
+        <div class="col-md-7 offset-md-1">
+            <div id="mainImage">
+                <img src="{{ main_img }}" alt="" class="img-dimension">
             </div>
         </div>
 
-    {% if logged == true %}
-        <!-- Button to show when the user is logged in -->
-        <div style="width: 200px; margin: auto; text-align: center">
-            <button type="button" class="btn btn-success btn-lg" style="margin: 5px">Rent this product</button>
-        </div>
-    {% else %}
-        <!-- Button to show when the user's NOT logged in -->
-        <div style="width: 400px; margin: 0 auto; text-align: center">
-            <form action="/login">
-                <button type="submit" class="btn btn-danger btn-lg" style="margin: 5px">You have to login to rent a product</button>
-            </form>
-        </div>
-    {% endif %}
-{% endif %}
+        <div class="col-md-5 offset-md-1">
+            <div class="box">
+                <h1 class="text-center">{{ title }}</h1>
+                <p class="goToDescription"><a href="#details" class="scroll-to">Scroll to product details, material & care and sizing</a>
+                </p>
+                <p class="price">{{ price }}€</p>
 
+                {% if logged %}
+                    <p class="text-center buttons">
+                        <a href="#" class="btn btn-success"><i class="fa fa-shopping-cart"></i>Rent this product</a> 
+                    </p>
+                {% else %}
+                    <p class="text-center buttons">
+                        <a href="/login" class="btn btn-danger">You have to login to rent</a>
+                    </p>
+                {% endif %}
+            </div>
+
+            {% if img %}
+                <div class="row" id="thumbs">
+                    {% for i in img %}
+                        <div class="col-xs-4">
+                            <a href="{{ i }}" class="thumb">
+                                <img src="{{ i }}" alt="" class="img-responsive">
+                            </a>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            </div>
+        </div>
+
+        <!-- détails d'un produit -->
+        <div class="box" id="details">
+            <h4>Description</h4>
+            <blockquote>
+                <p><em>{{ desc }}</em>
+                </p>
+            </blockquote>
+
+            <h4>Material</h4>
+            <ul>
+                <li>{{ material }}</li>
+            </ul>
+                    
+            <h4>Color</h4>
+            <ul>
+                <li>{{ color }}</li>
+            </ul>
+                    
+            <h4>Size</h4>
+            <ul>
+                <li>{{ size }}</li>
+            </ul>
+
+            <h4>Waterproof</h4>
+            <ul>
+                <li>{{ waterproof }}</li>
+            </ul>
+        </div>
+{% endif %}
+</div>
 {% endblock %}
