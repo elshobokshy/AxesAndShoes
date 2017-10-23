@@ -26,17 +26,15 @@ class AppController extends Controller
 
     public function detail(Request $request, Response $response, $id)
     {
-        if (!($product = Product::find($id))) {
+        if (!($product = Product::find($id)))
             return $this->view->render($response, 'App/detail.twig', array('isNull' => true));
-        }
 
         $json = json_decode($product->image)->img;
 
-        if ($iMax = (count($json) > 0)) {
-            $img = [];
-            for ($i = 0; $i < $iMax; $i++) {
-                $img[] = $_SERVER['REQUEST_URI'] . '/../../img/' . $json[$i]->url;
-            }
+        $img = array();
+        for($i = 0 ; $i < sizeof($json) ; $i++)
+        {
+            array_push($img, "img/" . $json[$i]->url); 
         }
 
         $data = array(
@@ -51,24 +49,35 @@ class AppController extends Controller
             'price' => $product->price
         );
 
-        $date = $request->getParam('date');
-        if ($date && strtotime($date)) {
+        if($request->isPost())
+        {
+            $date = $request->getParam("date");
+
+            $this->validator->request($request, [
+                "date" => V::date('Y/m/d')
+            ]);
+
             $datetime1 = date_create($date);
             $datetime2 = date_create($product->dateToRent);
             $interval = date_diff($datetime1, $datetime2);
-
-            if ($interval->format('%R%a') < 0) {
-                Product::find($id)->update(
+    
+            if($interval && $interval->format('%R%a') < 0)
+            {
+                $this->container->db->table('product')->where(id, "=", $id)->update(
                     [
-                        'dateToRent' => date('Y-m-d', strtotime($date))
+                        "dateToRent" => date("Y-m-d", strtotime($date))
                     ]
                 );
 
                 return $this->redirect($response, 'profile');
             }
+            else
+            {
+                $this->validator->addError('date', 'The specified date is invalid!');
+            }
             $data['invalid_date'] = true;
         }
-
+        
         return $this->view->render($response, 'App/detail.twig', $data);
     }
 
@@ -119,7 +128,7 @@ class AppController extends Controller
             $conc = '';
 
             // Changing the name of each file uploaded and uploading it in img folder
-            if ($noErrors = '1') {
+            if ($noErrors = 1) {
                 for ($i = 0; $i < $cnt; $i++) {
                     $name = uniqid('img-' . date('Ymd') . '-' . pathinfo($_FILES['image']['name'][$i], PATHINFO_EXTENSION), true);
                     if (isset($_FILES['image']['tmp_name'][$i])) {
