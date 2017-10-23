@@ -30,7 +30,12 @@ class AppController extends Controller
         $product = $this->container->db->table('product')->find($id);
 
         if($product == NULL)
-            return $this->view->render($response, 'App/detail.twig', array("isNull" => true));    
+            return $this->view->render($response, 'App/detail.twig', array("isNull" => true));
+
+        $val = $this->auth->check() ? true : false;
+
+        $color = $this->container->db->table('color')->find($product->color_id);
+        $material = $this->container->db->table('material')->find($product->material_id);
 
         $json = json_decode($product->image)->img;
 
