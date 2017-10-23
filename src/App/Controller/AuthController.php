@@ -91,7 +91,6 @@ class AuthController extends Controller
                         'user.delete' => 0
                     ]
                 ];
-
                 $user = $this->auth->registerAndActivate($credentials);
 
                 $role->users()->attach($user);

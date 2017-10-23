@@ -18,34 +18,34 @@ class AppController extends Controller
 
     public function profile(Request $request, Response $response)
     {
-        if($this->auth->guest()) {
+        if ($this->auth->guest()) {
             return $this->view->render($response, 'Auth/login.twig');
         } else if ($user = $this->auth->getUser()) {
             return $this->view->render($response, 'App/profile.twig');
         }
     }
-    
+
     public function product(Request $request, Response $response, $id)
     {
         $product = $this->container->db->table('product')->find($id);
 
-        if($product == NULL)
+        if ($product == NULL)
             return $this->view->render($response, 'App/product.twig', array("isNull" => true));
 
         $val = $this->auth->check() ? true : false;
 
         $json = json_decode($product->image)->img;
 
-        $img = array();
-        for($i = 0 ; $i < sizeof($json) ; $i++)
-        {
+
+        $img = [];
+        for ($i = 0; $i < sizeof($json); $i++) {
             array_push($img, $_SERVER['REQUEST_URI'] . "/../../img/" . $json[$i]->url);
         }
 
         $data = array(
             "logged" => $val,
             "title" => $product->title,
-            "desc" => $product->description, 
+            "desc" => $product->description,
             "color" => $product->color, 
             "material" => $product->material,
             "size" => $product->size,
@@ -68,7 +68,7 @@ class AppController extends Controller
             $material = $request->getParam('material');
             $color = $request->getParam('color');
 
-            $imgs = array();
+            $imgs = [];
             $cnt = count($_FILES['image']);
 
             $allowed =  array('gif','png' ,'jpg', 'jpeg');
@@ -126,6 +126,7 @@ class AppController extends Controller
                 $product = new Product();
 
                 $credentials = [
+
                     'title' => $title,
                     'description' => $description,
                     'size' => $password,
@@ -135,7 +136,7 @@ class AppController extends Controller
                     'color' => $color,
                     'image' => $files
                 ];
-
+                $product->dateToRent = date('Y-m-d');
                 $product->title = $title;
                 $product->description = $description;
                 $product->size = $size;

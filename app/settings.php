@@ -3,7 +3,6 @@
 return [
     'env' => 'prod',
     'settings' => [
-
         'displayErrorDetails' => false,
 
         'view' => [

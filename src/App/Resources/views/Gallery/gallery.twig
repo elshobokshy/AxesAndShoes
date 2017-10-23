@@ -1,0 +1,25 @@
+{% extends 'layout.twig' %}
+{% block title %} Gallery {% endblock %}
+
+{% block body %}
+
+    {#<pre>{{ dump(materials) }}</pre>#}
+
+    <div id="all">
+        <div id="content">
+            <div class="container">
+                <div class="col-md-3">
+                    <!-- Filters -->
+                    {% include 'Gallery/filters.twig' %}
+                </div>
+                <div class="col-sm-9">
+                    <!-- Products -->
+                    {% include 'Gallery/products.twig' %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+
