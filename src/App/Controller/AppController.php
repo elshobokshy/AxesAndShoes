@@ -30,15 +30,13 @@ class AppController extends Controller
         $product = $this->container->db->table('product')->find($id);
 
         if($product == NULL)
-            return $this->view->render($response, 'App/detail.twig', array("isNull" => true));
-
-        $val = $this->auth->check() ? true : false;
+            return $this->view->render($response, 'App/detail.twig', array("isNull" => true));    
 
         $json = json_decode($product->image)->img;
 
         $main_img = $_SERVER['REQUEST_URI'] . "/../../img/" . $json[0]->url;
 
-        if(sizeof($json) > 1)
+        if(sizeof($json) > 0)
         {
             $img = array();
             for($i = 0 ; $i < sizeof($json) ; $i++)
@@ -48,32 +46,49 @@ class AppController extends Controller
         }
 
         $data = array(
-            "logged" => $val,
+            "logged" => $this->auth->check(),
             "title" => $product->title,
             "desc" => $product->description, 
             "color" => $product->color, 
             "material" => $product->material,
             "size" => $product->size,
-<<<<<<< d1f11094b78696c539f7a4bdbef218bf14c8359a
-<<<<<<< 951bcee37d81c18f2142860220515cb375b4e2af
             "waterproof" => $product->waterproof,
-            "img" => $img
-=======
-=======
->>>>>>> The real price is now displayed. The "product" page's been renamed to "detail" page. The template has also been applied to it.
-            "waterproof" => $product->waterproof ? "Yes" : "No",
+            "img" => $img,
             "main_img" => $main_img,
-            "img" => $img, 
             "price" =>$product->price
-<<<<<<< d1f11094b78696c539f7a4bdbef218bf14c8359a
->>>>>>> The real price is now displayed. The "product" page's been renamed to "detail" page. The template has also been applied to it.
-=======
->>>>>>> The real price is now displayed. The "product" page's been renamed to "detail" page. The template has also been applied to it.
         );
 
+        $date = $request->getParam("date");
+        if($date)
+        { 
+            if(strtotime($date))
+            {
+                $datetime1 = date_create($date);
+                $datetime2 = date_create($product->dateToRent);
+                $interval = date_diff($datetime1, $datetime2);
+ 
+                if($interval->format('%R%a') < 0)
+                {
+                    $this->container->db->table('product')->where(id, "=", $id)->update(
+                        [
+                            "dateToRent" => date("Y-m-d", strtotime($date))
+                        ]
+                    );
+
+                    return $this->redirect($response, 'profile');
+                }
+                else
+                {
+                    $data["invalid_date"] = true;
+                }
+            }
+            else
+            {
+                $data["invalid_date"] = true;
+            }
+        }
+
         return $this->view->render($response, 'App/detail.twig', $data);
-<<<<<<< e68d9af617e9edd242d6500169578758c29b6eda
-<<<<<<< a05df651fb50e307d059dac23205b0fcd1d76d8c
     }
 
     public function add(Request $request, Response $response)
@@ -164,6 +179,7 @@ class AppController extends Controller
                 $product->color = $color;
                 $product->material = $material;
                 $product->image = $jsonImgs;
+                $product->dateToRent = date("Y-m-d");
                 $product->save();
 
                 $this->flash('success', 'Your shoes has been put to rent to the public.');
@@ -178,51 +194,6 @@ class AppController extends Controller
         ];
 
         return $this->view->render($response, 'App/add.twig', $data);
-    }
-    
-    public function search(Request $request, Response $response)
-    {
-        $searching = $request->getParam('search');
-        if($searching)
-        {
-            $products = $this->container->db->table('product')->where('title',  'like',  '%' . $searching . '%')->get();      
-            $data = ["products" => []];
-            
-            foreach ($products as $p)
-            {   
-                print_r($p->title);
-                
-            }
-        }
-
-        return $this->view->render($response, 'App/search.twig');
-=======
->>>>>>> Renaming the "product" page "detail"
-    }
-
-    public function search(Request $request, Response $response)
-    {
-        $searching = $request->getParam('search');
-        if($searching)
-        {
-            $products = $this->container->db->table('product')->where('title',  'like',  '%' . $searching . '%')->get();      
-            $product_list = [];
-            
-            foreach ($products as $p)
-            {   
-                $json = json_decode($p->image)->img;
-                $url = "img/" . $json[0]->url;
-                array_push($product_list, [
-                                            "id" => $p->id,
-                                            "title" => $p->title, 
-                                            "img" => $url, 
-                                            "price" => $p->price]);
-            }
-        }
-
-        return $this->view->render($response, 'App/search.twig', ["products" => $product_list]);
-=======
->>>>>>> Renaming the "product" page "detail"
     }
 
     public function search(Request $request, Response $response)

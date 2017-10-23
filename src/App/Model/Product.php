@@ -19,6 +19,7 @@ class Product extends Model
         'material',
         'color',
         'image',
+        'dateToRent',
     ];
 
     public $timestamps = false;
