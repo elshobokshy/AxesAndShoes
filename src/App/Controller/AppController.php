@@ -30,13 +30,26 @@ class AppController extends Controller
         $product = $this->container->db->table('product')->find($id);
 
         if($product == NULL)
+<<<<<<< HEAD
             return $this->view->render($response, 'App/detail.twig', array("isNull" => true));    
+=======
+            return $this->view->render($response, 'App/detail.twig', array("isNull" => true));
+
+        $val = $this->auth->check() ? true : false;
+
+        $color = $this->container->db->table('color')->find($product->color_id);
+        $material = $this->container->db->table('material')->find($product->material_id);
+>>>>>>> 983d60f867d55a3d990ebce25ef9aedc0b420afe
 
         $json = json_decode($product->image)->img;
 
         $main_img = $_SERVER['REQUEST_URI'] . "/../../img/" . $json[0]->url;
 
+<<<<<<< HEAD
         if(sizeof($json) > 0)
+=======
+        if(sizeof($json) > 1)
+>>>>>>> 983d60f867d55a3d990ebce25ef9aedc0b420afe
         {
             $img = array();
             for($i = 0 ; $i < sizeof($json) ; $i++)
