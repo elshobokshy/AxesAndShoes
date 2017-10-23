@@ -3,7 +3,6 @@
 return [
     'env' => 'dev',
     'settings' => [
-
         'displayErrorDetails' => true,
 
         'assets' => [
@@ -17,10 +16,8 @@ return [
                 'cache' => false
             ]
         ],
-
         'monolog' => [
             'path' => dirname(__DIR__) . '/var/logs/dev.log'
         ]
-
     ]
 ];

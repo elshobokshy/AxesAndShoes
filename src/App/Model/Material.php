@@ -9,4 +9,9 @@ class Material extends Model
     protected $table = 'material';
     protected $primaryKey = 'id';
     public $timestamps = false;
+
+    public function products()
+    {
+        return $this->hasMany('Product', 'id', 'color_id');
+    }
 }

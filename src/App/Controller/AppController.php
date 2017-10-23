@@ -18,42 +18,79 @@ class AppController extends Controller
 
     public function profile(Request $request, Response $response)
     {
-        if($this->auth->guest()) {
+        if ($this->auth->guest()) {
             return $this->view->render($response, 'Auth/login.twig');
         } else if ($user = $this->auth->getUser()) {
             return $this->view->render($response, 'App/profile.twig');
         }
     }
     
-    public function product(Request $request, Response $response, $id)
+    public function detail(Request $request, Response $response, $id)
     {
         $product = $this->container->db->table('product')->find($id);
 
         if($product == NULL)
-            return $this->view->render($response, 'App/product.twig', array("isNull" => true));
+            return $this->view->render($response, 'App/detail.twig', array("isNull" => true));
 
         $val = $this->auth->check() ? true : false;
 
+        $color = $this->container->db->table('color')->find($product->color_id);
+        $material = $this->container->db->table('material')->find($product->material_id);
+
         $json = json_decode($product->image)->img;
 
-        $img = array();
-        for($i = 0 ; $i < sizeof($json) ; $i++)
+        if(sizeof($json) > 0)
         {
-            array_push($img, $_SERVER['REQUEST_URI'] . "/../../img/" . $json[$i]->url);
+            $img = array();
+            for($i = 0 ; $i < sizeof($json) ; $i++)
+            {
+                array_push($img, $_SERVER['REQUEST_URI'] . "/../../img/" . $json[$i]->url);
+            }
         }
 
         $data = array(
-            "logged" => $val,
+            "logged" => $this->auth->check(),
             "title" => $product->title,
-            "desc" => $product->description, 
+            "desc" => $product->description,
             "color" => $product->color, 
             "material" => $product->material,
             "size" => $product->size,
             "waterproof" => $product->waterproof,
-            "img" => $img
+            "img" => $img,
+            "price" =>$product->price
         );
 
-        return $this->view->render($response, 'App/product.twig', $data);
+        $date = $request->getParam("date");
+        if($date)
+        { 
+            if(strtotime($date))
+            {
+                $datetime1 = date_create($date);
+                $datetime2 = date_create($product->dateToRent);
+                $interval = date_diff($datetime1, $datetime2);
+ 
+                if($interval->format('%R%a') < 0)
+                {
+                    $this->container->db->table('product')->where(id, "=", $id)->update(
+                        [
+                            "dateToRent" => date("Y-m-d", strtotime($date))
+                        ]
+                    );
+
+                    return $this->redirect($response, 'profile');
+                }
+                else
+                {
+                    $data["invalid_date"] = true;
+                }
+            }
+            else
+            {
+                $data["invalid_date"] = true;
+            }
+        }
+
+        return $this->view->render($response, 'App/detail.twig', $data);
     }
 
     public function add(Request $request, Response $response)
@@ -68,7 +105,7 @@ class AppController extends Controller
             $material = $request->getParam('material');
             $color = $request->getParam('color');
 
-            $imgs = array();
+            $imgs = [];
             $cnt = count($_FILES['image']);
 
             $allowed =  array('gif','png' ,'jpg', 'jpeg');
@@ -125,6 +162,7 @@ class AppController extends Controller
                 $product = new Product();
 
                 $credentials = [
+
                     'title' => $title,
                     'description' => $description,
                     'size' => $password,
@@ -134,7 +172,7 @@ class AppController extends Controller
                     'color' => $color,
                     'image' => $files
                 ];
-
+                $product->dateToRent = date('Y-m-d');
                 $product->title = $title;
                 $product->description = $description;
                 $product->size = $size;
@@ -159,5 +197,27 @@ class AppController extends Controller
 
         return $this->view->render($response, 'App/add.twig', $data);
     }
-    
+
+    public function search(Request $request, Response $response)
+    {
+        $searching = $request->getParam('search');
+        if($searching)
+        {
+            $products = $this->container->db->table('product')->where('title',  'like',  '%' . $searching . '%')->get();      
+            $product_list = [];
+            
+            foreach ($products as $p)
+            {   
+                $json = json_decode($p->image)->img;
+                $url = "img/" . $json[0]->url;
+                array_push($product_list, [
+                                            "id" => $p->id,
+                                            "title" => $p->title, 
+                                            "img" => $url, 
+                                            "price" => $p->price]);
+            }
+        }
+
+        return $this->view->render($response, 'App/search.twig', ["products" => $product_list]);
+    }
 }
