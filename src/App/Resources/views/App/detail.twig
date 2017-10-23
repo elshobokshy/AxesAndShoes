@@ -21,9 +21,14 @@
                 <p class="price">{{ price }}€</p>
 
                 {% if logged %}
-                    <p class="text-center buttons">
-                        <a href="#" class="btn btn-success"><i class="fa fa-shopping-cart"></i>Rent this product</a> 
-                    </p>
+                    <form class="text-center" method="post">
+                        {% if invalid_date %}
+                            <p>The specified date is not valid!</p>
+                        {% endif %}
+                        <input type="date" placeholder="YYYY/mm/dd" name="date">
+                        {{ csrf() }}
+                        <input type="submit" class="btn btn-success" value="Rent this product"> 
+                    </form>
                 {% else %}
                     <p class="text-center buttons">
                         <a href="/login" class="btn btn-danger">You have to login to rent</a>

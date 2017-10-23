@@ -30,9 +30,7 @@ class AppController extends Controller
         $product = $this->container->db->table('product')->find($id);
 
         if($product == NULL)
-            return $this->view->render($response, 'App/detail.twig', array("isNull" => true));
-
-        $val = $this->auth->check() ? true : false;
+            return $this->view->render($response, 'App/detail.twig', array("isNull" => true));    
 
         $json = json_decode($product->image)->img;
 
@@ -46,7 +44,7 @@ class AppController extends Controller
         }
 
         $data = array(
-            "logged" => $val,
+            "logged" => $this->auth->check(),
             "title" => $product->title,
             "desc" => $product->description,
             "color" => $product->color, 
@@ -56,6 +54,36 @@ class AppController extends Controller
             "img" => $img,
             "price" =>$product->price
         );
+
+        $date = $request->getParam("date");
+        if($date)
+        { 
+            if(strtotime($date))
+            {
+                $datetime1 = date_create($date);
+                $datetime2 = date_create($product->dateToRent);
+                $interval = date_diff($datetime1, $datetime2);
+ 
+                if($interval->format('%R%a') < 0)
+                {
+                    $this->container->db->table('product')->where(id, "=", $id)->update(
+                        [
+                            "dateToRent" => date("Y-m-d", strtotime($date))
+                        ]
+                    );
+
+                    return $this->redirect($response, 'profile');
+                }
+                else
+                {
+                    $data["invalid_date"] = true;
+                }
+            }
+            else
+            {
+                $data["invalid_date"] = true;
+            }
+        }
 
         return $this->view->render($response, 'App/detail.twig', $data);
     }
@@ -149,6 +177,7 @@ class AppController extends Controller
                 $product->color = $color;
                 $product->material = $material;
                 $product->image = $jsonImgs;
+                $product->dateToRent = date("Y-m-d");
                 $product->save();
 
                 $this->flash('success', 'Your shoes has been put to rent to the public.');
