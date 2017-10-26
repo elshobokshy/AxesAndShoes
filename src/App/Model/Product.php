@@ -10,10 +10,10 @@ class Product extends Model
 
     protected $primaryKey = 'id';
 
-/*    public function colors() TODO comprendre ça
-    {
-        return $this->hasMany('Color', 'id', 'id')->orderBy('name', 'ASC');
-    }*/
+    /*    public function colors() TODO comprendre ça
+        {
+            return $this->hasMany('Color', 'id', 'id')->orderBy('name', 'ASC');
+        }*/
 
     protected $fillable = [
         'dateToRent',
@@ -30,7 +30,8 @@ class Product extends Model
 
     public $timestamps = false;
 
-    public function getImgUrl() {
+    public function getImgUrl()
+    {
         $array = json_decode($this->image);
         foreach ($array->img as $item) {
             $tmp[] = $item;
@@ -38,16 +39,20 @@ class Product extends Model
         return $tmp;
     }
 
-    public function getMainImg() {
+    public function getMainImg()
+    {
         $a = $this->getImgUrl();
         return $a[0];
     }
 
-
+    public function user()
+    {
+        return $this->belongsTo('User');
+    }
 
     public static function getToRent()
     {
-        return Product::where('dateToRent', '<=', date('Y-m-d'))->orderBy('dateToRent','DESC');
+        return Product::where('dateToRent', '<=', date('Y-m-d'))->orderBy('dateToRent', 'DESC');
     }
 
     public static function getMinSize()
