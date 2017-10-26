@@ -23,4 +23,8 @@ class User extends EloquentUser
     ];
 
     protected $loginNames = ['username', 'email'];
+
+    public function products() {
+        return $this->hasMany('Product');
+    }
 }

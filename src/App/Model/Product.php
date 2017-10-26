@@ -43,8 +43,10 @@ class Product extends Model
         return $a[0];
     }
 
-
-
+    public function user() {
+        return $this->belongsTo('User');
+    }
+    
     public static function getToRent()
     {
         return Product::where('dateToRent', '<=', date('Y-m-d'))->orderBy('dateToRent','DESC');
