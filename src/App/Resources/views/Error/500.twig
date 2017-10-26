@@ -4,10 +4,33 @@
 
 {% block body %}
 
-    <div class="row">
-        <div class="col-sm-12">
-            <p>Internal Server Error.</p>
+    <div class="container">
+
+        <div class="col-md-12">
+
+            <div class="row" id="error-page">
+                <div class="col-sm-6 col-sm-offset-3">
+                    <div class="box">
+
+                    <p class="text-center">
+                        <img src="{{ asset('img/logo.png') }}" alt="Obaju">
+                    </p>
+
+                    <h3>Oops - the server has crashed</h3>
+                    <h4 class="text-muted">Error 500 - Internal Server Error</h4>
+
+                    <p class="text-center">Please contact support and explain how did you get to this page!</p>
+
+                    <p class="buttons"><a href="{{ path_for('home') }}" class="btn btn-primary"><i class="fa fa-home"></i> Go to Homepage</a>
+                    </p>
+                    </div>
+                </div>
+            </div>
+
+
         </div>
+        <!-- /.col-md-9 -->
     </div>
+    <!-- /.container -->
 
 {% endblock %}

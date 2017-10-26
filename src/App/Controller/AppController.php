@@ -26,17 +26,15 @@ class AppController extends Controller
 
     public function detail(Request $request, Response $response, $id)
     {
-        if (!($product = Product::find($id))) {
+        if (!($product = Product::find($id)))
             return $this->view->render($response, 'App/detail.twig', array('isNull' => true));
-        }
 
         $json = json_decode($product->image)->img;
 
-        if ($iMax = (count($json) > 0)) {
-            $img = [];
-            for ($i = 0; $i < $iMax; $i++) {
-                $img[] = $_SERVER['REQUEST_URI'] . '/../../img/' . $json[$i]->url;
-            }
+        $img = array();
+        for($i = 0 ; $i < sizeof($json) ; $i++)
+        {
+            array_push($img, "img/" . $json[$i]->url); 
         }
 
         $data = array(
@@ -51,24 +49,35 @@ class AppController extends Controller
             'price' => $product->price
         );
 
-        $date = $request->getParam('date');
-        if ($date && strtotime($date)) {
+        if($request->isPost())
+        {
+            $date = $request->getParam("date");
+
+            $this->validator->request($request, [
+                "date" => V::date('Y-m-d')
+            ]);
+
             $datetime1 = date_create($date);
             $datetime2 = date_create($product->dateToRent);
             $interval = date_diff($datetime1, $datetime2);
-
-            if ($interval->format('%R%a') < 0) {
-                Product::find($id)->update(
+    
+            if($interval && $interval->format('%R%a') < 0)
+            {
+                $this->container->db->table('product')->where(id, "=", $id)->update(
                     [
-                        'dateToRent' => date('Y-m-d', strtotime($date))
+                        "dateToRent" => date("Y-m-d", strtotime($date))
                     ]
                 );
 
                 return $this->redirect($response, 'profile');
             }
+            else
+            {
+                $this->validator->addError('date', 'The specified date is invalid!');
+            }
             $data['invalid_date'] = true;
         }
-
+        
         return $this->view->render($response, 'App/detail.twig', $data);
     }
 
@@ -119,7 +128,7 @@ class AppController extends Controller
             $conc = '';
 
             // Changing the name of each file uploaded and uploading it in img folder
-            if ($noErrors = '1') {
+            if ($noErrors = 1) {
                 for ($i = 0; $i < $cnt; $i++) {
                     $name = uniqid('img-' . date('Ymd') . '-' . pathinfo($_FILES['image']['name'][$i], PATHINFO_EXTENSION), true);
                     if (isset($_FILES['image']['tmp_name'][$i])) {
@@ -181,5 +190,92 @@ class AppController extends Controller
         }
 
         return $this->view->render($response, 'App/search.twig', ['products' => $product_list]);
+    }
+
+    public function editProfile(Request $request, Response $response)
+    {
+        if(isset($_POST["change_details"])) {
+            if ($request->isPost()) {
+                $email = $request->getParam('email');
+                $first_name = $request->getParam('first_name');
+                $last_name = $request->getParam('last_name');
+                $birthdate = $request->getParam('birthdate');
+                $city = $request->getParam('city');
+                $country = $request->getParam('country');
+                
+                $this->validator->request($request, [
+                    'email' => V::noWhitespace()->email(),
+                    'first_name' => V::length(1, 25)->alpha()->noWhitespace(),
+                    'last_name' => V::length(1, 25)->alpha(),
+                    'city' => V::length(1, 25)->alpha()->noWhitespace(),
+                    'country' => V::length(1, 25)->alpha()->noWhitespace(),
+                    'birthdate' => V::Date('Y-m-d')
+                ]);
+
+                if ($this->validator->isValid()) {
+
+                    $credentials = [
+                        'email' => $email,
+                        'first_name' => $first_name,
+                        'last_name' => $last_name,
+                        'city' => $city,
+                        'country' => $country,
+                        'birthdate' => $birthdate,
+                    ];
+                    
+                    $this->auth->update($this->auth->getUser()->id, $credentials);
+
+                    $this->flash('success', 'Your account has been updated.');
+
+                    return $this->redirect($response, 'profile');
+                }
+                return $this->view->render($response, 'App/profile.twig');
+            }
+        }
+        else if(isset($_POST["change_pw"])) {
+            if ($request->isPost()) {
+                $password = $request->getParam('password');
+                $passwordOld = $request->getParam('password_old');
+
+                $verify = [
+                    'password' => $passwordOld,
+                ];
+
+                if (!$this->auth->validateCredentials($this->auth->getUser(), $verify)) {
+                    $this->validator->addError('password', 'The old password isn\'t correct. Please try again.');
+                }
+                
+                $this->validator->request($request, [
+                    'password' => [
+                        'rules' => V::noWhitespace()->length(6, 25),
+                        'messages' => [
+                            'length' => 'The password length must be between {{minValue}} and {{maxValue}} characters'
+                        ]
+                    ],
+                    'password_confirm' => [
+                        'rules' => V::equals($password),
+                        'messages' => [
+                            'equals' => 'Passwords don\'t match'
+                        ]
+                    ],
+                ]);
+
+                if ($this->validator->isValid()) {
+                    $role = $this->auth->findRoleByName('User');
+
+                    $credentials = [
+                        'password' => $password,
+                    ];
+                    
+                    $this->auth->update($this->auth->getUser()->id, $credentials);
+
+                    $this->flash('success', 'Your password has been updated.');
+
+                    return $this->redirect($response, 'profile');
+                }
+                return $this->view->render($response, 'App/profile.twig');
+            }
+
+        }
     }
 }
