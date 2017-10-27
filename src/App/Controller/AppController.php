@@ -38,6 +38,7 @@ class AppController extends Controller
         }
 
         $data = array(
+            'id' => $product->id,
             'logged' => $this->auth->check(),
             'title' => $product->title,
             'desc' => $product->description,
@@ -54,28 +55,19 @@ class AppController extends Controller
             $date = $request->getParam("date");
 
             $this->validator->request($request, [
-                "date" => V::date('Y-m-d')
+                "date" => V::intVal()->positive()
             ]);
-
-            $datetime1 = date_create($date);
-            $datetime2 = date_create($product->dateToRent);
-            $interval = date_diff($datetime1, $datetime2);
     
-            if($interval && $interval->format('%R%a') < 0)
-            {
-                $this->container->db->table('product')->where(id, "=", $id)->update(
+            if($this->validator->isValid())
+            {   
+                $product->update(
                     [
-                        "dateToRent" => date("Y-m-d", strtotime($date))
+                        "dateToRent" => date('Y-m-d', strtotime( "$product->dateToRent + $date day" ))
                     ]
                 );
 
                 return $this->redirect($response, 'profile');
             }
-            else
-            {
-                $this->validator->addError('date', 'The specified date is invalid!');
-            }
-            $data['invalid_date'] = true;
         }
         
         return $this->view->render($response, 'App/detail.twig', $data);
