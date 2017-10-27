@@ -33,7 +33,7 @@
 
                 {% if logged %}
                     <form class="text-center" method="post">
-                        <input type="date" placeholder="YYYY/mm/dd" name="date">
+                        <input type="text" placeholder="YYYY/mm/dd" name="date">
                         {{ csrf() }}
                         <input type="submit" class="btn btn-success" value="Rent this product"> 
                     </form>
