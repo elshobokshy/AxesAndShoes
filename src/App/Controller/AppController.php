@@ -5,6 +5,7 @@ namespace App\Controller;
 use Respect\Validation\Validator as V;
 use Slim\Http\Request;
 use Slim\Http\Response;
+use App\Model\User;
 use App\Model\Color;
 use App\Model\Material;
 use App\Model\Product;
@@ -156,6 +157,7 @@ class AppController extends Controller
                 $product->color = $color;
                 $product->material = $material;
                 $product->image = $jsonImgs;
+                $product->user_id = $this->auth->getUser()->id;
                 $product->save();
 
                 $this->flash('success', 'Your shoes has been put to rent to the public.');
@@ -278,4 +280,25 @@ class AppController extends Controller
 
         }
     }
+
+    public function dashboard(Request $request, Response $response)
+    {
+        if ($this->auth->check()) {
+
+            $products = Product::where('user_id', $this->auth->getUser()->id)->get();
+            /* foreach($products as $p) {
+                echo '<pre>';
+                print_r($p->title);
+                echo '</pre>';
+            }
+            die(); */
+
+            $data['products'] = $products;
+            
+            return $this->view->render($response, 'App/dashboard.twig', $data);
+        }
+
+        return $this->view->render($response, 'App/login.twig');
+    }
+
 }
