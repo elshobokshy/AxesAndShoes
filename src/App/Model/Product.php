@@ -8,8 +8,6 @@ class Product extends Model
 {
     protected $table = 'product';
 
-    protected $primaryKey = 'id';
-
 /*    public function colors() TODO comprendre ça
     {
         return $this->hasMany('Color', 'id', 'id')->orderBy('name', 'ASC');
@@ -26,6 +24,7 @@ class Product extends Model
         'color',
         'image',
         'dateToRent',
+        'user_id',
     ];
 
     public $timestamps = false;
