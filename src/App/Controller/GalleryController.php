@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Model\Color;
 use App\Model\Material;
 use App\Model\Product;
+use App\Model\User;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
@@ -44,6 +45,13 @@ class GalleryController extends Controller
         }
 
         $data['products'] = $q->get();
+
+        foreach ($data['products'] as $product) {
+            $json = json_decode($product->image)->img;
+            for ($i = 0, $iMax = count($json); $i < $iMax; $i++) {
+                $data['imgs'][$product->id][] = "img/" . $json[$i]->url;
+            }
+        }
 
         $data['post'] = $_POST;
         $data['get'] = $_GET;

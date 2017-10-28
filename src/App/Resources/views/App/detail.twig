@@ -32,8 +32,8 @@
                 <p class="price">{{ price }}€</p>
 
                 {% if logged %}
-                    <form class="text-center" method="post">
-                        <input type="text" placeholder="YYYY/mm/dd" name="date">
+                    <form class="text-center" method="post" action="/detail/{{id}}">
+                        <input type="number form-control" placeholder="1" name="date">
                         {{ csrf() }}
                         <input type="submit" class="btn btn-success" value="Rent this product"> 
                     </form>

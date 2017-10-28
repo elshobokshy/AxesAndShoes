@@ -33,12 +33,12 @@ class AppController extends Controller
         $json = json_decode($product->image)->img;
 
         $img = array();
-        for($i = 0 ; $i < sizeof($json) ; $i++)
-        {
-            array_push($img, "img/" . $json[$i]->url); 
+        for ($i = 0, $iMax = count($json); $i < $iMax; $i++) {
+            array_push($img, "img/" . $json[$i]->url);
         }
 
         $data = array(
+            'id' => $product->id,
             'logged' => $this->auth->check(),
             'title' => $product->title,
             'desc' => $product->description,
@@ -50,35 +50,24 @@ class AppController extends Controller
             'price' => $product->price
         );
 
-        if($request->isPost())
-        {
+        if ($request->isPost()) {
             $date = $request->getParam("date");
 
             $this->validator->request($request, [
-                "date" => V::date('Y-m-d')
+                "date" => V::intVal()->positive()
             ]);
-
-            $datetime1 = date_create($date);
-            $datetime2 = date_create($product->dateToRent);
-            $interval = date_diff($datetime1, $datetime2);
-    
-            if($interval && $interval->format('%R%a') < 0)
-            {
-                $this->container->db->table('product')->where(id, "=", $id)->update(
+            if($this->validator->isValid())
+            {   
+                $product->update(
                     [
-                        "dateToRent" => date("Y-m-d", strtotime($date))
+                        "dateToRent" => date('Y-m-d', strtotime( "$product->dateToRent + $date day" ))
                     ]
                 );
 
                 return $this->redirect($response, 'profile');
             }
-            else
-            {
-                $this->validator->addError('date', 'The specified date is invalid!');
-            }
-            $data['invalid_date'] = true;
         }
-        
+
         return $this->view->render($response, 'App/detail.twig', $data);
     }
 
@@ -196,7 +185,7 @@ class AppController extends Controller
 
     public function editProfile(Request $request, Response $response)
     {
-        if(isset($_POST["change_details"])) {
+        if (isset($_POST["change_details"])) {
             if ($request->isPost()) {
                 $email = $request->getParam('email');
                 $first_name = $request->getParam('first_name');
@@ -204,7 +193,7 @@ class AppController extends Controller
                 $birthdate = $request->getParam('birthdate');
                 $city = $request->getParam('city');
                 $country = $request->getParam('country');
-                
+
                 $this->validator->request($request, [
                     'email' => V::noWhitespace()->email(),
                     'first_name' => V::length(1, 25)->alpha()->noWhitespace(),
@@ -224,7 +213,7 @@ class AppController extends Controller
                         'country' => $country,
                         'birthdate' => $birthdate,
                     ];
-                    
+
                     $this->auth->update($this->auth->getUser()->id, $credentials);
 
                     $this->flash('success', 'Your account has been updated.');
@@ -233,8 +222,7 @@ class AppController extends Controller
                 }
                 return $this->view->render($response, 'App/profile.twig');
             }
-        }
-        else if(isset($_POST["change_pw"])) {
+        } else if (isset($_POST["change_pw"])) {
             if ($request->isPost()) {
                 $password = $request->getParam('password');
                 $passwordOld = $request->getParam('password_old');
@@ -246,7 +234,7 @@ class AppController extends Controller
                 if (!$this->auth->validateCredentials($this->auth->getUser(), $verify)) {
                     $this->validator->addError('password', 'The old password isn\'t correct. Please try again.');
                 }
-                
+
                 $this->validator->request($request, [
                     'password' => [
                         'rules' => V::noWhitespace()->length(6, 25),
@@ -268,7 +256,7 @@ class AppController extends Controller
                     $credentials = [
                         'password' => $password,
                     ];
-                    
+
                     $this->auth->update($this->auth->getUser()->id, $credentials);
 
                     $this->flash('success', 'Your password has been updated.');
