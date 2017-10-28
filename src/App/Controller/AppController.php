@@ -287,20 +287,20 @@ class AppController extends Controller
     {
         $product = Product::find($id);
 
-        if (!($product)) {
-
-            return $this->view->render($response, 'App/dashboard.twig');
-
-        }
-
         if ($product->dateToRent <= date("Y-m-d")) {
 
-            $product->delete();
+            Product::find($id)->delete();
+
+            $this->flash('succes', 'Item deleted.');
+
+        } else {
+
+            $this->flash('error', 'Can not deleted an already rent item.');
 
         }
 
+        return $this->redirect($response, 'dashboard');
 
-        return $this->view->render($response, 'App/dashboard.twig');
     }
 
 }
