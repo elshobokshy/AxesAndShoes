@@ -61,7 +61,7 @@
                                             <td>{{ p.dateToRent }}</td>
                                             <td>$ {{ p.price }}</td>
                                             <td>
-                                                {% if p.dateToRent <= date() %}
+                                                {% if p.dateToRent <= 'now'|date('Y-m-d') %}
                                                     <span class="label label-warning">Awaiting customer</span>
                                                 {% else %}
                                                     <span class="label label-success">Rent</span>
