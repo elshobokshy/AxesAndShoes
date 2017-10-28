@@ -49,7 +49,7 @@
                                     <tr>
                                         <th>Order #</th>
                                         <th>End date</th>
-                                        <th>Total</th>
+                                        <th>Price per day</th>
                                         <th>Status</th>
                                         <th></th>
                                     </tr>
@@ -77,6 +77,34 @@
                         </div>
 
                         <hr>
+
+                        <p class="lead">Items rented</p>
+
+                        <hr>
+
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Order #</th>
+                                        <th>End date</th>
+                                        <th>Price per day</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for p in rented %}
+                                        <tr>
+                                            <th># {{ p.id }}</th>
+                                            <td>{{ p.dateToRent }}</td>
+                                            <td>$ {{ p.price }}</td>
+                                            <td><a href="{{ path_for('detail', { 'id': p.id }) }}" class="btn btn-primary btn-sm">View</a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
 
