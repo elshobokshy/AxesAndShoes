@@ -21,6 +21,7 @@ class Product extends Model
         'image',
         'dateToRent',
         'user_id',
+        'rented_by',
     ];
 
     public $timestamps = false;

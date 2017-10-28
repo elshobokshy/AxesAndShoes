@@ -60,11 +60,12 @@ class AppController extends Controller
             {   
                 $product->update(
                     [
-                        "dateToRent" => date('Y-m-d', strtotime( "$product->dateToRent + $date day" ))
+                        "dateToRent" => date('Y-m-d', strtotime( "$product->dateToRent + $date day" )),
+                        "rented_by" => $this->auth->getUser()->id
                     ]
                 );
 
-                return $this->redirect($response, 'profile');
+                return $this->redirect($response, 'dashboard');
             }
         }
 
@@ -274,8 +275,12 @@ class AppController extends Controller
         if ($this->auth->check()) {
 
             $products = Product::where('user_id', $this->auth->getUser()->id)->get();
+            $rented = Product::where('rented_by', $this->auth->getUser()->id)->get();
 
-            $data['products'] = $products;
+            $data = [
+                'products' => $products,
+                'rented' => $rented,
+            ];
             
             return $this->view->render($response, 'App/dashboard.twig', $data);
         }
