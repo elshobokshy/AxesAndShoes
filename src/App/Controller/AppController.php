@@ -51,6 +51,16 @@ class AppController extends Controller
         );
 
         if ($request->isPost()) {
+
+            $rented_by = Product::find($id)->user_id;
+            $current_user = $this->auth->getUser()->id;
+
+            if ($current_user == $rented_by) {
+                $this->flash('error', 'You can not rent your own product.');
+
+                return $this->redirect($response, 'gallery');
+            }
+            
             $date = $request->getParam("date");
 
             $this->validator->request($request, [
