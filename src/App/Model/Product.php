@@ -7,13 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Product extends Model
 {
     protected $table = 'product';
-
-    protected $primaryKey = 'id';
-
-    /*    public function colors() TODO comprendre ça
-        {
-            return $this->hasMany('Color', 'id', 'id')->orderBy('name', 'ASC');
-        }*/
+    
 
     protected $fillable = [
         'dateToRent',
@@ -26,6 +20,8 @@ class Product extends Model
         'color',
         'image',
         'dateToRent',
+        'user_id',
+        'rented_by',
     ];
 
     public $timestamps = false;
@@ -45,11 +41,10 @@ class Product extends Model
         return $a[0];
     }
 
-    public function user()
-    {
+    public function user() {
         return $this->belongsTo('User');
     }
-
+    
     public static function getToRent()
     {
         return Product::where('dateToRent', '<=', date('Y-m-d'))->orderBy('dateToRent', 'DESC');

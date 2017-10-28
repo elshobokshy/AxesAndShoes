@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Oct 21, 2017 at 03:09 PM
+-- Generation Time: Oct 29, 2017 at 12:37 AM
 -- Server version: 10.1.25-MariaDB-1~xenial
 -- PHP Version: 7.0.22-0ubuntu0.16.04.1
 
@@ -36,16 +36,6 @@ CREATE TABLE `activations` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Dumping data for table `activations`
---
-
-INSERT INTO `activations` (`id`, `user_id`, `code`, `completed`, `completed_at`, `created_at`, `updated_at`) VALUES
-(2, 1, 'Tz8IkVnIAM4VBS0BZk1HflJbI6p5McBX', 1, '2017-10-14 09:15:39', '2017-10-14 09:15:39', '2017-10-14 09:15:39'),
-(3, 2, 'paVGpS3mBExUZea7PqjM2Yuav0KNMpk8', 1, '2017-10-14 09:38:51', '2017-10-14 09:38:51', '2017-10-14 09:38:51'),
-(4, 3, 'pbjfrwquHEtIcbloCdhQjxnJzvmcADTX', 1, '2017-10-14 09:44:40', '2017-10-14 09:44:40', '2017-10-14 09:44:40'),
-(5, 4, 'DZpxeobucwPGvAiN27lq5yXNOCgQw8mJ', 1, '2017-10-20 09:23:39', '2017-10-20 09:23:39', '2017-10-20 09:23:39');
-
 -- --------------------------------------------------------
 
 --
@@ -62,7 +52,10 @@ CREATE TABLE `color` (
 --
 
 INSERT INTO `color` (`id`, `colorName`) VALUES
-(1, 'Brown');
+(1, 'Brown'),
+(2, 'Black'),
+(3, 'Yellow'),
+(4, 'Other');
 
 -- --------------------------------------------------------
 
@@ -80,7 +73,11 @@ CREATE TABLE `material` (
 --
 
 INSERT INTO `material` (`id`, `materialName`) VALUES
-(1, 'Lether');
+(2, 'Side Leather'),
+(3, 'Calfskin'),
+(4, 'Pigskin'),
+(5, 'Nubuck'),
+(6, 'Unknown');
 
 -- --------------------------------------------------------
 
@@ -95,16 +92,6 @@ CREATE TABLE `persistences` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `persistences`
---
-
-INSERT INTO `persistences` (`id`, `user_id`, `code`, `created_at`, `updated_at`) VALUES
-(1, 4, 'ETnHlmaQSTulS8Z6Okkhg9fxNqaesGRf', '2017-10-20 09:23:49', '2017-10-20 09:23:49'),
-(2, 4, 'e6V1mcAweK9Vs38OdItRrp6pcFZ2td1t', '2017-10-20 13:50:31', '2017-10-20 13:50:31'),
-(3, 4, 'ak5hJ6xbdSrNH2gqTh1osc1ZJCeMlg5F', '2017-10-20 19:44:35', '2017-10-20 19:44:35'),
-(5, 4, 'LqOYiUqKgPT4woTQqT4h6UbEUCzcDLLg', '2017-10-21 09:12:29', '2017-10-21 09:12:29');
 
 -- --------------------------------------------------------
 
@@ -122,15 +109,10 @@ CREATE TABLE `product` (
   `size` int(11) NOT NULL,
   `waterproof` varchar(3) NOT NULL,
   `image` text NOT NULL,
-  `price` double(11,2) NOT NULL
+  `price` double(11,2) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `rented_by` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `product`
---
-
-INSERT INTO `product` (`id`, `dateToRent`, `title`, `description`, `color`, `material`, `size`, `waterproof`, `image`, `price`) VALUES
-(1, '2017-10-16', 'Shoes delux', 'Brodequin quasi neuf', 'Brown', 'Leather', 44, 'Yes', '{"img":[{"url":"1getinspired1.jpg"}]}', 4.00);
 
 -- --------------------------------------------------------
 
@@ -184,16 +166,6 @@ CREATE TABLE `role_users` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Dumping data for table `role_users`
---
-
-INSERT INTO `role_users` (`user_id`, `role_id`, `created_at`, `updated_at`) VALUES
-(1, 2, '2017-10-14 09:15:39', '2017-10-14 09:15:39'),
-(2, 2, '2017-10-14 09:38:51', '2017-10-14 09:38:51'),
-(3, 2, '2017-10-14 09:44:40', '2017-10-14 09:44:40'),
-(4, 2, '2017-10-20 09:23:39', '2017-10-20 09:23:39');
-
 -- --------------------------------------------------------
 
 --
@@ -232,7 +204,10 @@ INSERT INTO `throttle` (`id`, `user_id`, `type`, `ip`, `created_at`, `updated_at
 (16, NULL, 'ip', '127.0.0.1', '2017-10-09 15:22:16', '2017-10-09 15:22:16'),
 (17, NULL, 'global', NULL, '2017-10-14 09:15:48', '2017-10-14 09:15:48'),
 (18, NULL, 'ip', '::1', '2017-10-14 09:15:48', '2017-10-14 09:15:48'),
-(19, 1, 'user', NULL, '2017-10-14 09:15:48', '2017-10-14 09:15:48');
+(20, NULL, 'global', NULL, '2017-10-23 10:32:09', '2017-10-23 10:32:09'),
+(21, NULL, 'ip', '::1', '2017-10-23 10:32:09', '2017-10-23 10:32:09'),
+(22, NULL, 'global', NULL, '2017-10-24 20:17:02', '2017-10-24 20:17:02'),
+(23, NULL, 'ip', '::1', '2017-10-24 20:17:03', '2017-10-24 20:17:03');
 
 -- --------------------------------------------------------
 
@@ -255,16 +230,6 @@ CREATE TABLE `user` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `user`
---
-
-INSERT INTO `user` (`id`, `username`, `email`, `password`, `last_name`, `first_name`, `permissions`, `birthdate`, `country`, `city`, `last_login`, `created_at`, `updated_at`) VALUES
-(1, 'LouisCuny', 'louis-cuny@orange.fr', '$2y$10$3DeOcDP8KfY8eS.qqMVXyut8UGg4jZjGc3980aAWnJ7zsDe0X5MbS', 'Cuny', 'Louis', '{"user.delete":0}', '1997-01-08', 's', 'n', '2017-10-14 09:15:39', '2017-10-14 09:15:39', '2017-10-14 09:15:39'),
-(2, 'LouisCuzny', 'louis-z@orange.fr', '$2y$10$lx/PaTqrTkpm1TrPm6m2tOZgAEdkpNB.CcN110xhnoh2bqLiJlgHW', 'Cuny', 'Louis', '{"user.delete":0}', '1111-11-11', 'France', 'Nancy', '2017-10-14 09:38:51', '2017-10-14 09:38:51', '2017-10-14 09:38:51'),
-(3, 'dzz', 'd@f.fr', '$2y$10$pT2AsacnGlMr/CnK93I01O5Fjrl/1kZSlkXw0h3wkiMfp9xqyYFEu', 'fs', 'fs', '{"user.delete":0}', '0003-03-09', 'z', 'z', '2017-10-14 09:44:40', '2017-10-14 09:44:40', '2017-10-14 09:44:40'),
-(4, 'elshobokshy', 'islam20088@hotmail.com', '$2y$10$gjKTj6nNtW..B6qzNPTlte8q7Ros4nboYzM/CRmq/YTKbrgqo.tMm', 'ELSHOBOKSHY', 'Islam', '{"user.delete":0}', '1995-04-21', 'France', 'Nancy', '2017-10-21 09:12:29', '2017-10-20 09:23:39', '2017-10-21 09:12:29');
 
 --
 -- Indexes for dumped tables
@@ -347,27 +312,27 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `activations`
 --
 ALTER TABLE `activations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT for table `color`
 --
 ALTER TABLE `color`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `material`
 --
 ALTER TABLE `material`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT for table `persistences`
 --
 ALTER TABLE `persistences`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 --
 -- AUTO_INCREMENT for table `product`
 --
 ALTER TABLE `product`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 --
 -- AUTO_INCREMENT for table `reminders`
 --
@@ -382,12 +347,12 @@ ALTER TABLE `roles`
 -- AUTO_INCREMENT for table `throttle`
 --
 ALTER TABLE `throttle`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- Constraints for dumped tables
 --

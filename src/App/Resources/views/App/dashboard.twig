@@ -1,0 +1,114 @@
+{% extends 'layout.twig' %}
+
+{% block title %}- Profile{% endblock %}
+
+{% block body %}
+
+<div class="container">
+
+    <div class="col-md-3">
+        <!-- *** CUSTOMER MENU ***
+    _________________________________________________________ -->
+        <div class="panel panel-default sidebar-menu">
+
+            <div class="panel-heading">
+                <h3 class="panel-title">Customer section</h3>
+            </div>
+
+            <div class="panel-body">
+                <ul class="nav nav-pills nav-stacked">
+                    <li>
+                        <a href="{{ path_for('dashboard') }}"><i class="fa fa-list"></i> Dashboard</a>
+                    </li>
+                    <li>
+                        <a href="{{ path_for('profile') }}"><i class="fa fa-user"></i> My account</a>
+                    </li>
+                    <li>
+                        <a href="{{ path_for('logout') }}"><i class="fa fa-sign-out"></i> Logout</a>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+        <!-- /.col-md-3 -->
+
+        <!-- *** CUSTOMER MENU END *** -->
+    </div>
+
+    <div class="col-md-9" id="customer-orders">
+                    <div class="box">
+                        <h1>Dashboard</h1>
+
+                        <p class="lead">Items put to rent</p>
+
+                        <hr>
+
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Order #</th>
+                                        <th>End date</th>
+                                        <th>Price per day</th>
+                                        <th>Status</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for p in products %}
+                                        <tr>
+                                            <th># {{ p.id }}</th>
+                                            <td>{{ p.dateToRent }}</td>
+                                            <td>$ {{ p.price }}</td>
+                                            <td>
+                                                {% if p.dateToRent <= 'now'|date('Y-m-d') %}
+                                                    <span class="label label-warning">Awaiting customer</span>
+                                                {% else %}
+                                                    <span class="label label-success">Rent</span>
+                                                {% endif %}
+                                            </td>
+                                            <td><a href="{{ path_for('detail', { 'id': p.id }) }}" class="btn btn-primary btn-sm">View</a>
+                                                <a href="{{ path_for('delete', { 'id': p.id }) }}" class="btn btn-danger btn-sm">Delete</a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <hr>
+
+                        <p class="lead">Items rented</p>
+
+                        <hr>
+
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Order #</th>
+                                        <th>End date</th>
+                                        <th>Price per day</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for p in rented %}
+                                        <tr>
+                                            <th># {{ p.id }}</th>
+                                            <td>{{ p.dateToRent }}</td>
+                                            <td>$ {{ p.price }}</td>
+                                            <td><a href="{{ path_for('detail', { 'id': p.id }) }}" class="btn btn-primary btn-sm">View</a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+</div>
+<!-- /.container -->
+
+{% endblock %}

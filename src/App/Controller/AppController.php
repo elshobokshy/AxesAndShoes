@@ -5,6 +5,7 @@ namespace App\Controller;
 use Respect\Validation\Validator as V;
 use Slim\Http\Request;
 use Slim\Http\Response;
+use App\Model\User;
 use App\Model\Color;
 use App\Model\Material;
 use App\Model\Product;
@@ -50,6 +51,16 @@ class AppController extends Controller
         );
 
         if ($request->isPost()) {
+
+            $rented_by = Product::find($id)->user_id;
+            $current_user = $this->auth->getUser()->id;
+
+            if ($current_user == $rented_by) {
+                $this->flash('error', 'You can not rent your own product.');
+
+                return $this->redirect($response, 'gallery');
+            }
+            
             $date = $request->getParam("date");
 
             $this->validator->request($request, [
@@ -59,11 +70,12 @@ class AppController extends Controller
             {   
                 $product->update(
                     [
-                        "dateToRent" => date('Y-m-d', strtotime( "$product->dateToRent + $date day" ))
+                        "dateToRent" => date('Y-m-d', strtotime( "$product->dateToRent + $date day" )),
+                        "rented_by" => $this->auth->getUser()->id
                     ]
                 );
 
-                return $this->redirect($response, 'profile');
+                return $this->redirect($response, 'dashboard');
             }
         }
 
@@ -145,6 +157,7 @@ class AppController extends Controller
                 $product->color = $color;
                 $product->material = $material;
                 $product->image = $jsonImgs;
+                $product->user_id = $this->auth->getUser()->id;
                 $product->save();
 
                 $this->flash('success', 'Your shoes has been put to rent to the public.');
@@ -266,4 +279,43 @@ class AppController extends Controller
 
         }
     }
+
+    public function dashboard(Request $request, Response $response)
+    {
+        if ($this->auth->check()) {
+
+            $products = Product::where('user_id', $this->auth->getUser()->id)->get();
+            $rented = Product::where('rented_by', $this->auth->getUser()->id)->get();
+
+            $data = [
+                'products' => $products,
+                'rented' => $rented,
+            ];
+            
+            return $this->view->render($response, 'App/dashboard.twig', $data);
+        }
+
+        return $this->view->render($response, 'App/login.twig');
+    }
+
+    public function delete(Request $request, Response $response, $id)
+    {
+        $product = Product::find($id);
+
+        if ($product->dateToRent <= date("Y-m-d")) {
+
+            Product::find($id)->delete();
+
+            $this->flash('succes', 'Item deleted.');
+
+        } else {
+
+            $this->flash('error', 'Can not deleted an already rent item.');
+
+        }
+
+        return $this->redirect($response, 'dashboard');
+
+    }
+
 }
