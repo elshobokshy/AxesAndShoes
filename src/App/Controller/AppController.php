@@ -117,7 +117,7 @@ class AppController extends Controller
             }
 
             if (!$noErrors) {
-                $this->validator->addError('image', 'Image needs to only have these extensions : gif, png, jpg, jpeg.');
+                $this->validator->addError('image', 'You have to upload at least one image that needs to only have these extensions : gif, png, jpg, jpeg.');
             }
 
             $this->validator->request($request, [
