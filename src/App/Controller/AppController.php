@@ -274,12 +274,6 @@ class AppController extends Controller
         if ($this->auth->check()) {
 
             $products = Product::where('user_id', $this->auth->getUser()->id)->get();
-            /* foreach($products as $p) {
-                echo '<pre>';
-                print_r($p->title);
-                echo '</pre>';
-            }
-            die(); */
 
             $data['products'] = $products;
             
@@ -287,6 +281,26 @@ class AppController extends Controller
         }
 
         return $this->view->render($response, 'App/login.twig');
+    }
+
+    public function delete(Request $request, Response $response, $id)
+    {
+        $product = Product::find($id);
+
+        if (!($product)) {
+
+            return $this->view->render($response, 'App/dashboard.twig');
+
+        }
+
+        if ($product->dateToRent <= date("Y-m-d")) {
+
+            $product->delete();
+
+        }
+
+
+        return $this->view->render($response, 'App/dashboard.twig');
     }
 
 }
