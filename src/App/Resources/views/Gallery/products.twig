@@ -1,10 +1,10 @@
 {% for product in products %}
     <div class="col-md-4 col-sm-6">
         <div class="product">
-                        <a href="#">
-                            <img src="{{ asset(attribute(imgs,product.id).0 )}}" alt="img" class="img-responsive">
-                        </a>
-            <a href="detail.html" class="invisible">
+            <a href="{{ path_for( 'detail', {'id': product.id } )}}">
+                <img src="{{ asset(attribute(imgs,product.id).0 )}}" alt="img" class="img-responsive">
+            </a>
+            <a href="{{ path_for( 'detail', {'id': product.id } )}}" class="invisible">
                 <img src="{{ asset(attribute(imgs,product.id).1 )}}" alt="" class="img-responsive">
             </a>
 
@@ -16,7 +16,7 @@
             {% endif %}
 
             <div class="text">
-                <h3><a href="detail.html">{{ product.title }}</a></h3>
+                <h3><a href="{{ path_for( 'detail', {'id': product.id } )}}">{{ product.title }}</a></h3>
                 <p class="price">${{ product.price }} /day</p>
                 <p class="buttons">
                     <a href="{{ path_for( 'detail', {'id': product.id } )}}" class="btn btn-default">View detail</a>
