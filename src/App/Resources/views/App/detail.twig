@@ -4,8 +4,11 @@
 
 <div class="container">
 {% if isNull %}
+    {% block title %}{{ parent() }} - Product not Found{% endblock %}
     <h1 style="margin: 20px;">The product you're looking for doesn't exist anymore. Sorry!</h1>
 {% else %}
+
+    {% block title %}{{ parent() }} - Product detail{% endblock %}
 
     {% if has_errors() %}
         <div class="alert alert-warning">

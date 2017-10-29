@@ -1,5 +1,7 @@
 {% extends 'layout.twig' %}
 
+{% block title %}{{ parent() }} - Search{% endblock %}
+
 {% block body %}
 
     <form action="{{ path_for('search') }}" method="POST">
