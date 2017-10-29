@@ -7,6 +7,14 @@
             <a href="detail.html" class="invisible">
                 <img src="{{ asset(attribute(imgs,product.id).1 )}}" alt="" class="img-responsive">
             </a>
+
+            {% if product.user_id == user %}
+            <div class="ribbon sale">
+                <div class="theribbon">OWNED</div>
+                <div class="ribbon-background"></div>
+            </div>
+            {% endif %}
+
             <div class="text">
                 <h3><a href="detail.html">{{ product.title }}</a></h3>
                 <p class="price">${{ product.price }} /day</p>

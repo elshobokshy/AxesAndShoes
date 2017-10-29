@@ -66,6 +66,8 @@ class GalleryController extends Controller
 
 
         $data['test'] = array_diff($data['colors'], $data['f']['colors']);
+        
+        $data['user'] = $this->auth->getUser()->id;
 
         return $this->view->render($response, 'Gallery/gallery.twig', $data);
     }
