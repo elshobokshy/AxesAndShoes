@@ -11,3 +11,5 @@ $app->get('/search', 'app.controller:search')->setname('search');
 $app->post('/search', 'app.controller:search');
 $app->get('/dashboard', 'app.controller:dashboard')->setname('dashboard');
 $app->get('/delete/{id}', 'app.controller:delete')->setname('delete');
+$app->get('/checkout/{id}', 'app.controller:checkout')->setname('checkout');
+$app->post('/checkout/{id}', 'app.controller:checkout');
