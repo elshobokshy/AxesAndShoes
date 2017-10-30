@@ -420,7 +420,15 @@ class AppController extends Controller
             }
         }
 
-        $data['id'] = $product->id;
+        $user = $this->auth->getUser();
+
+        $data = [
+            'id' => $product->id,
+            'user_fname' => $user->first_name,
+            'user_lname' => $user->last_name,
+            'user_email' => $user->email,
+
+        ];
 
         return $this->view->render($response, 'App/checkout.twig', $data);
 

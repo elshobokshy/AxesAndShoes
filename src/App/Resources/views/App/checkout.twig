@@ -32,18 +32,29 @@
                 
                 <h1>Checkout - Address <i class="fa fa-map-marker"></i></h1>
 
+                 <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group" id="locationField">
+                                <label for="firstname">Enter your address</label>
+                                <input id="autocomplete" class="form-control"
+                                    onFocus="geolocate()" type="text"></input>
+                            </div>
+                        </div>
+                    </div>
+
+                <h3>Please complete/update the information below</h3>
                 <div class="content">
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="firstname">Firstname</label>
-                                <input type="text" class="form-control" id="firstname">
+                                <input type="text" class="form-control" value="{{ user_fname }}">
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="lastname">Lastname</label>
-                                <input type="text" class="form-control" id="lastname">
+                                <input type="text" class="form-control"value="{{ user_lname }}" >
                             </div>
                         </div>
                     </div>
@@ -53,13 +64,13 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="company">App. Number</label>
-                                <input type="text" class="form-control" id="company">
+                                <input type="text" class="form-control" id="street_number" disabled="true">
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="street">Street</label>
-                                <input type="text" class="form-control" id="street">
+                                <input type="text" class="form-control" id="route" disabled="true">
                             </div>
                         </div>
                     </div>
@@ -69,32 +80,32 @@
                         <div class="col-sm-6 col-md-3">
                             <div class="form-group">
                                 <label for="city">Postal code</label>
-                                <input type="text" class="form-control" id="city">
+                                <input type="text" class="form-control" id="postal_code" disabled="true">
                             </div>
                         </div>
                         <div class="col-sm-6 col-md-3">
                             <div class="form-group">
                                 <label for="zip">City</label>
-                                <input type="text" class="form-control" id="zip">
+                                <input type="text" class="form-control" id="locality" disabled="true">
                             </div>
                         </div>
                         <div class="col-sm-12 col-md-6">
                             <div class="form-group">
                                 <label for="country">Country</label>
-                                <select class="form-control" id="country"></select>
+                                <input type="text" class="form-control" id="country" disabled="true">
                             </div>
                         </div>
 
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="phone">Telephone</label>
-                                <input type="text" class="form-control" id="phone">
+                                <input type="text" class="form-control">
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="email">Email</label>
-                                <input type="text" class="form-control" id="email">
+                                <input type="text" class="form-control" value="{{ user_email }}">
                             </div>
                         </div>
 
@@ -211,9 +222,16 @@
         <hr>
 
 
-
     </form>
 </div>
 <!-- /.container -->
 
+{% endblock %}
+
+{% block javascript %}
+    {{ parent() }}
+    <script src="{{ asset('js/autocomplete.js') }}"></script>
+    <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBBmBwiZfN39C0rgQV-5DXUZq1kSPWDzOE&libraries=places&callback=initAutocomplete">
+    </script>
 {% endblock %}
