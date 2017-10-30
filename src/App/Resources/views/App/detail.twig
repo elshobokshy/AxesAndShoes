@@ -34,11 +34,9 @@
                 <p class="price">{{ price }}€</p>
 
                 {% if logged %}
-                    <form class="text-center" method="post" action="/detail/{{id}}">
-                        <input type="number form-control" placeholder="How many days?" name="date">
-                        {{ csrf() }}
-                        <input type="submit" class="btn btn-success" value="Rent this product"> 
-                    </form>
+                    <p class="text-center buttons">
+                        <a href="{{ path_for( 'checkout', {'id': id } )}}" class="btn btn-success">Rent this product</a>
+                    </p>
                 {% else %}
                     <p class="text-center buttons">
                         <a href="/login" class="btn btn-danger">You have to login to rent</a>
