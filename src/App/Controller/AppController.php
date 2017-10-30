@@ -50,41 +50,6 @@ class AppController extends Controller
             'price' => $product->price
         );
 
-        if ($request->isPost()) {
-
-            $rented_by = Product::find($id)->user_id;
-            $current_user = $this->auth->getUser()->id;
-
-            if ($current_user == $rented_by) {
-                $this->flash('error', 'You can not rent your own product.');
-
-                return $this->redirect($response, 'gallery');
-            }
-            
-            $date = $request->getParam("date");
-
-            $this->validator->request($request, [
-                "date" => [
-                    'rules' => V::intVal()->positive(),
-                    'messages' => [
-                        'intVal' => 'Number of days needs to be an integer.',
-                        'positive' => 'Number of days needs to be a positive value.'
-                    ]
-                ],
-            ]);
-            if($this->validator->isValid())
-            {   
-                $product->update(
-                    [
-                        "dateToRent" => date('Y-m-d', strtotime( "$product->dateToRent + $date day" )),
-                        "rented_by" => $this->auth->getUser()->id
-                    ]
-                );
-
-                return $this->redirect($response, 'dashboard');
-            }
-        }
-
         return $this->view->render($response, 'App/detail.twig', $data);
     }
 
@@ -409,6 +374,55 @@ class AppController extends Controller
         }
 
         return $this->redirect($response, 'dashboard');
+
+    }
+
+    public function checkout(Request $request, Response $response, $id)
+    {
+
+        if (!($product = Product::find($id))) {
+            $this->flash('error', 'The product you\'re trying to rent does not exist');            
+            return $this->redirect($response, 'gallery');
+        }
+        
+        if ($request->isPost()) {
+
+            $rented_by = Product::find($id)->user_id;
+            $current_user = $this->auth->getUser()->id;
+
+            if ($current_user == $rented_by) {
+                $this->flash('error', 'You can not rent your own product.');
+
+                return $this->redirect($response, 'gallery');
+            }
+            
+            $date = $request->getParam("date");
+
+            $this->validator->request($request, [
+                "date" => [
+                    'rules' => V::intVal()->positive(),
+                    'messages' => [
+                        'intVal' => 'Number of days needs to be an integer.',
+                        'positive' => 'Number of days needs to be a positive value.'
+                    ]
+                ],
+            ]);
+            if($this->validator->isValid())
+            {   
+                $product->update(
+                    [
+                        "dateToRent" => date('Y-m-d', strtotime( "$product->dateToRent + $date day" )),
+                        "rented_by" => $this->auth->getUser()->id
+                    ]
+                );
+
+                return $this->redirect($response, 'dashboard');
+            }
+        }
+
+        $data['id'] = $product->id;
+
+        return $this->view->render($response, 'App/checkout.twig', $data);
 
     }
 
