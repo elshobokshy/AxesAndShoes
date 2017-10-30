@@ -379,6 +379,10 @@ class AppController extends Controller
 
     public function checkout(Request $request, Response $response, $id)
     {
+        
+        if ($this->auth->guest()) {
+            return $this->view->render($response, 'Auth/login.twig');
+        }
 
         if (!($product = Product::find($id))) {
             $this->flash('error', 'The product you\'re trying to rent does not exist');            
