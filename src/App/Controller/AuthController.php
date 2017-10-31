@@ -46,25 +46,70 @@ class AuthController extends Controller
             $country = $request->getParam('country');
             
             $this->validator->request($request, [
-                'username' => V::length(3, 25)->alnum('_')->noWhitespace(),
-                'email' => V::noWhitespace()->email(),
+                'username' => [
+                    'rules' => V::length(3, 25)->alnum('_')->noWhitespace(),
+                    'messages' => [
+                        'noWhitespace' => 'Username shouldn\'t contain any white spaces.',
+                        'alnum' => 'Username must contain only letters (a-z), digits (0-9) and "_".',
+                        'length' => 'Username should be 3 to 25 characters long.'
+                    ]
+                ],
                 'password' => [
                     'rules' => V::noWhitespace()->length(6, 25),
                     'messages' => [
-                        'length' => 'The password length must be between {{minValue}} and {{maxValue}} characters'
+                        'length' => 'The password length must be between {{minValue}} and {{maxValue}} characters.',
+                        'noWhitespace' => 'The password shouldn\'t contain any white spaces.'
                     ]
                 ],
                 'password_confirm' => [
                     'rules' => V::equals($password),
                     'messages' => [
-                        'equals' => 'Passwords don\'t match'
+                        'equals' => 'Passwords don\'t match.'
                     ]
                 ],
-                'first_name' => V::length(1, 25)->alpha()->noWhitespace(),
-                'last_name' => V::length(1, 25)->alpha(),
-                'city' => V::length(1, 25)->alpha()->noWhitespace(),
-                'country' => V::length(1, 25)->alpha()->noWhitespace(),
-                'birthdate' => V::Date('Y/m/d')
+                'email' => [
+                    'rules' => V::email(),
+                    'messages' => [
+                        'email' => 'The email entered is not of a correct email format.'
+                    ]
+                ],
+                'first_name' => [
+                    'rules' => V::length(1, 25)->alpha()->noWhitespace(),
+                    'messages' => [
+                        'noWhitespace' => 'First name shouldn\'t contain any white spaces.',
+                        'alpha' => 'First name needs to contains alpha characters only.',
+                        'length' => 'First name should be 1 to 25 characters long.'
+                    ]
+                ],
+                'last_name'=> [
+                    'rules' => V::length(1, 25)->alpha(),
+                    'messages' => [
+                        'alpha' => 'Last name needs to contains alpha characters only.',
+                        'length' => 'Last name should be 1 to 25 characters long.'
+                    ]
+                ],
+                'city' => [
+                    'rules' => V::length(1, 25)->alpha()->noWhitespace(),
+                    'messages' => [
+                        'noWhitespace' => 'City shouldn\'t contain any white spaces.',
+                        'alpha' => 'City needs to contains alpha characters only.',
+                        'length' => 'City should be 1 to 25 characters long.'
+                    ]
+                ],
+                'country' => [
+                    'rules' => V::length(1, 25)->alpha()->noWhitespace(),
+                    'messages' => [
+                        'noWhitespace' => 'Country shouldn\'t contain any white spaces.',
+                        'alpha' => 'Country needs to contains alpha characters only.',
+                        'length' => 'Country should be 1 to 25 characters long.'
+                    ]
+                ],
+                'birthdate' => [
+                    'rules' => V::Date('Y-m-d'),
+                    'messages' => [
+                        'date' => 'Birthdate : Please use the Y-m-d format. Ex: 2000-01-31'
+                    ]
+                ],
             ]);
 
             if ($this->auth->findByCredentials(['login' => $username])) {

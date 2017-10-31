@@ -5,6 +5,7 @@ namespace App\Controller;
 use Respect\Validation\Validator as V;
 use Slim\Http\Request;
 use Slim\Http\Response;
+use App\Model\User;
 use App\Model\Color;
 use App\Model\Material;
 use App\Model\Product;
@@ -49,24 +50,6 @@ class AppController extends Controller
             'price' => $product->price
         );
 
-        if ($request->isPost()) {
-            $date = $request->getParam("date");
-
-            $this->validator->request($request, [
-                "date" => V::intVal()->positive()
-            ]);
-            if($this->validator->isValid())
-            {   
-                $product->update(
-                    [
-                        "dateToRent" => date('Y-m-d', strtotime( "$product->dateToRent + $date day" ))
-                    ]
-                );
-
-                return $this->redirect($response, 'profile');
-            }
-        }
-
         return $this->view->render($response, 'App/detail.twig', $data);
     }
 
@@ -99,17 +82,66 @@ class AppController extends Controller
             }
 
             if (!$noErrors) {
-                $this->validator->addError('image', 'Image needs to only have these extensions : gif, png, jpg, jpeg.');
+                $this->validator->addError('image', 'You have to upload at least one image that needs to only have these extensions : gif, png, jpg, jpeg.');
             }
 
             $this->validator->request($request, [
-                'title' => V::notEmpty()->alpha()->length(3, 25),
-                'description' => V::notEmpty()->length(5, 1000)->alpha(),
-                'size' => V::notEmpty()->noWhitespace()->numeric()->positive()->between(1, 255),
-                'price' => V::notEmpty()->noWhitespace()->numeric()->positive()->between(1, 999),
-                'waterproof' => V::notEmpty()->noWhitespace()->length(1, 3),
-                'material' => V::notEmpty()->length(3, 20),
-                'color' => V::notEmpty()->length(3, 20),
+                'title' => [
+                    'rules' => V::notEmpty()->alpha()->length(3, 25),
+                    'messages' => [
+                        'notEmpty' => 'Title shouldn\'t be empty.',
+                        'alpha' => 'Title needs to contains alpha characters only.',
+                        'length' => 'Title should be 3 to 25 characters long.'
+                    ]
+                ], 
+                'description' => [
+                    'rules' => V::notEmpty()->length(5, 1000)->alpha(),
+                    'messages' => [
+                        'notEmpty' => 'Description shouldn\'t be empty.',
+                        'alpha' => 'Description needs to contains alpha characters only.',
+                        'length' => 'Description should be 5 to 1000 characters long.'
+                    ]
+                ],
+                'size' => [
+                    'rules' => V::notEmpty()->numeric()->positive()->between(1, 255)->noWhitespace(),
+                    'messages' => [
+                        'notEmpty' => 'Size shouldn\'t be empty.',
+                        'noWhitespace' => 'Size shouldn\'t contain any white spaces.',
+                        'numeric' => 'Size needs to be a numeric value.',
+                        'positive' => 'Size needs to be a positive value.',
+                        'between' => 'Size needs to range from 1 to 255.'
+                    ]
+                ],
+                'price' => [
+                    'rules' => V::notEmpty()->numeric()->positive()->between(1, 999)->noWhitespace(),
+                    'messages' => [
+                        'notEmpty' => 'Price shouldn\'t be empty.',
+                        'noWhitespace' => 'Price shouldn\'t contain any white spaces.',
+                        'numeric' => 'Price needs to be a numeric value.',
+                        'positive' => 'Price needs to be a positive value.',
+                        'between' => 'Price needs to range from 1 to 999.'
+                    ]
+                ],
+                'waterproof' => [
+                    'rules' => V::notEmpty()->noWhitespace()->length(1, 3),
+                    'messages' => [
+                        'notEmpty' => 'Waterproof shouldn\'t be empty.',
+                        'noWhitespace' => 'Waterproof shouldn\'t contain any white spaces, only accepts two values, Yes or No.',
+                        'length' => 'Waterproof only accepts two values, Yes or No.'
+                    ]
+                ],
+                'material' => [
+                    'rules' => V::notEmpty()->length(3, 20),
+                    'messages' => [
+                        'notEmpty' => 'Material : please choose one from the list.'
+                    ]
+                ],
+                'color' => [
+                    'rules' => V::notEmpty()->length(3, 20),
+                    'messages' => [
+                        'notEmpty' => 'Color : please choose one from the list.'
+                    ]
+                ],
             ]);
 
             // img folder
@@ -119,12 +151,14 @@ class AppController extends Controller
             // Changing the name of each file uploaded and uploading it in img folder
             if ($noErrors = 1) {
                 for ($i = 0; $i < $cnt; $i++) {
-                    $name = uniqid('img-' . date('Ymd') . '-' . pathinfo($_FILES['image']['name'][$i], PATHINFO_EXTENSION), true);
-                    if (isset($_FILES['image']['tmp_name'][$i])) {
-                        if (move_uploaded_file($_FILES['image']['tmp_name'][$i], $img . $name) === true) {
-                            $conc = $conc . ',{' . '"url":"' . $name . '"}';
+                    if(isset($_FILES['image']['name'][$i])) {
+                        $name = uniqid('img-' . date('Ymd') . '-' . pathinfo($_FILES['image']['name'][$i], PATHINFO_EXTENSION), true);
+                        if (isset($_FILES['image']['tmp_name'][$i])) {
+                            if (move_uploaded_file($_FILES['image']['tmp_name'][$i], $img . $name) === true) {
+                                $conc = $conc . ',{' . '"url":"' . $name . '"}';
+                            }
                         }
-                    }
+                    }                    
                 }
                 $jsonImgs = '{"img":[{' . substr($conc, 2) . ']}';
             }
@@ -145,6 +179,7 @@ class AppController extends Controller
                 $product->color = $color;
                 $product->material = $material;
                 $product->image = $jsonImgs;
+                $product->user_id = $this->auth->getUser()->id;
                 $product->save();
 
                 $this->flash('success', 'Your shoes has been put to rent to the public.');
@@ -193,12 +228,49 @@ class AppController extends Controller
                 $country = $request->getParam('country');
 
                 $this->validator->request($request, [
-                    'email' => V::noWhitespace()->email(),
-                    'first_name' => V::length(1, 25)->alpha()->noWhitespace(),
-                    'last_name' => V::length(1, 25)->alpha(),
-                    'city' => V::length(1, 25)->alpha()->noWhitespace(),
-                    'country' => V::length(1, 25)->alpha()->noWhitespace(),
-                    'birthdate' => V::Date('Y-m-d')
+                    'email' => [
+                        'rules' => V::email(),
+                        'messages' => [
+                            'email' => 'The email entered is not of a correct email format.'
+                        ]
+                    ],
+                    'first_name' => [
+                        'rules' => V::length(1, 25)->alpha()->noWhitespace(),
+                        'messages' => [
+                            'noWhitespace' => 'First name shouldn\'t contain any white spaces.',
+                            'alpha' => 'First name needs to contains alpha characters only.',
+                            'length' => 'First name should be 1 to 25 characters long.'
+                        ]
+                    ],
+                    'last_name'=> [
+                        'rules' => V::length(1, 25)->alpha(),
+                        'messages' => [
+                            'alpha' => 'Last name needs to contains alpha characters only.',
+                            'length' => 'Last name should be 1 to 25 characters long.'
+                        ]
+                    ],
+                    'city' => [
+                        'rules' => V::length(1, 25)->alpha()->noWhitespace(),
+                        'messages' => [
+                            'noWhitespace' => 'City shouldn\'t contain any white spaces.',
+                            'alpha' => 'City needs to contains alpha characters only.',
+                            'length' => 'City should be 1 to 25 characters long.'
+                        ]
+                    ],
+                    'country' => [
+                        'rules' => V::length(1, 25)->alpha()->noWhitespace(),
+                        'messages' => [
+                            'noWhitespace' => 'Country shouldn\'t contain any white spaces.',
+                            'alpha' => 'Country needs to contains alpha characters only.',
+                            'length' => 'Country should be 1 to 25 characters long.'
+                        ]
+                    ],
+                    'birthdate' => [
+                        'rules' => V::Date('Y-m-d'),
+                        'messages' => [
+                            'Date' => 'Birthdate : Please use the Y-m-d format. Ex: 2000-01-31'
+                        ]
+                    ],
                 ]);
 
                 if ($this->validator->isValid()) {
@@ -266,4 +338,104 @@ class AppController extends Controller
 
         }
     }
+
+    public function dashboard(Request $request, Response $response)
+    {
+        if ($this->auth->check()) {
+
+            $products = Product::where('user_id', $this->auth->getUser()->id)->get();
+            $rented = Product::where('rented_by', $this->auth->getUser()->id)->get();
+
+            $data = [
+                'products' => $products,
+                'rented' => $rented,
+            ];
+            
+            return $this->view->render($response, 'App/dashboard.twig', $data);
+        }
+
+        return $this->view->render($response, 'App/login.twig');
+    }
+
+    public function delete(Request $request, Response $response, $id)
+    {
+        $product = Product::find($id);
+
+        if ($product->dateToRent <= date("Y-m-d")) {
+
+            Product::find($id)->delete();
+
+            $this->flash('succes', 'Item deleted.');
+
+        } else {
+
+            $this->flash('error', 'Can not deleted an already rent item.');
+
+        }
+
+        return $this->redirect($response, 'dashboard');
+
+    }
+
+    public function checkout(Request $request, Response $response, $id)
+    {
+        
+        if ($this->auth->guest()) {
+            return $this->view->render($response, 'Auth/login.twig');
+        }
+
+        if (!($product = Product::find($id))) {
+            $this->flash('error', 'The product you\'re trying to rent does not exist');            
+            return $this->redirect($response, 'gallery');
+        }
+        
+        if ($request->isPost()) {
+
+            $rented_by = Product::find($id)->user_id;
+            $current_user = $this->auth->getUser()->id;
+
+            if ($current_user == $rented_by) {
+                $this->flash('error', 'You can not rent your own product.');
+
+                return $this->redirect($response, 'gallery');
+            }
+            
+            $date = $request->getParam("date");
+
+            $this->validator->request($request, [
+                "date" => [
+                    'rules' => V::intVal()->positive(),
+                    'messages' => [
+                        'intVal' => 'Number of days needs to be an integer.',
+                        'positive' => 'Number of days needs to be a positive value.'
+                    ]
+                ],
+            ]);
+            if($this->validator->isValid())
+            {   
+                $product->update(
+                    [
+                        "dateToRent" => date('Y-m-d', strtotime( "$product->dateToRent + $date day" )),
+                        "rented_by" => $this->auth->getUser()->id
+                    ]
+                );
+
+                return $this->redirect($response, 'dashboard');
+            }
+        }
+
+        $user = $this->auth->getUser();
+
+        $data = [
+            'id' => $product->id,
+            'user_fname' => $user->first_name,
+            'user_lname' => $user->last_name,
+            'user_email' => $user->email,
+
+        ];
+
+        return $this->view->render($response, 'App/checkout.twig', $data);
+
+    }
+
 }

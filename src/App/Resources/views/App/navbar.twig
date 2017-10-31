@@ -76,7 +76,7 @@
         <!--/.navbar-header -->
         <div class="navbar-collapse collapse" id="navigation">
             <ul class="nav navbar-nav navbar-left">
-                <li class="active">
+                <li>
                     <a href="{{ path_for('home') }}">Home</a>
                 </li>
                 <li>
@@ -84,10 +84,10 @@
                 </li>
                 {% if auth.check() %}
                     <li>
-                        <a href="{{ path_for('add') }}">Rent</a>
+                        <a href="{{ path_for('add') }}">Put to Rent</a>
                     </li>
                     <li>
-                        <a href="{{ path_for('profile') }}">Profile</a>
+                        <a href="{{ path_for('dashboard') }}">Profile</a>
                     </li>
                 {% endif %}
             </ul>
