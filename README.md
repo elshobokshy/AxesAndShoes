@@ -19,9 +19,6 @@ In order to run the project, use he following commands
 
 ```
 * composer install
-* npm install
-* sudo npm install -g gulp-cli
-* gulp build
 * php -S 0.0.0.0:8081 -t public/
 ```
 
