@@ -3,7 +3,7 @@ parameters:
     host: localhost
     username: root
     password: ~
-    database: slim_base
+    database: axesandshoes
     charset: utf8
     collation: utf8_general_ci
     prefix: ~
